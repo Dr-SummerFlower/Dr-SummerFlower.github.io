@@ -1,0 +1,229 @@
+{
+  "main": {
+    "id": "8678a9549e6497e9",
+    "type": "split",
+    "children": [
+      {
+        "id": "5acf3649f87cf22f",
+        "type": "tabs",
+        "children": [
+          {
+            "id": "5e18f1246459bc91",
+            "type": "leaf",
+            "state": {
+              "type": "markdown",
+              "state": {
+                "file": "posts/解决由vmware导致的网络卡顿现象.md",
+                "mode": "source",
+                "source": false
+              },
+              "icon": "lucide-file",
+              "title": "解决由vmware导致的网络卡顿现象"
+            }
+          }
+        ]
+      }
+    ],
+    "direction": "vertical"
+  },
+  "left": {
+    "id": "dda9b22e187706d1",
+    "type": "split",
+    "children": [
+      {
+        "id": "b850a62047f72b94",
+        "type": "tabs",
+        "children": [
+          {
+            "id": "e4c8fe2683fef738",
+            "type": "leaf",
+            "state": {
+              "type": "file-explorer",
+              "state": {
+                "sortOrder": "byModifiedTime",
+                "autoReveal": false
+              },
+              "icon": "lucide-folder-closed",
+              "title": "文件列表"
+            }
+          },
+          {
+            "id": "5c5fb0a49583cef4",
+            "type": "leaf",
+            "state": {
+              "type": "search",
+              "state": {
+                "query": "",
+                "matchingCase": false,
+                "explainSearch": false,
+                "collapseAll": false,
+                "extraContext": false,
+                "sortOrder": "alphabetical"
+              },
+              "icon": "lucide-search",
+              "title": "搜索"
+            }
+          },
+          {
+            "id": "d886fc68fcb39af2",
+            "type": "leaf",
+            "state": {
+              "type": "bookmarks",
+              "state": {},
+              "icon": "lucide-bookmark",
+              "title": "书签"
+            }
+          }
+        ]
+      }
+    ],
+    "direction": "horizontal",
+    "width": 200
+  },
+  "right": {
+    "id": "b6912b87349fa4bd",
+    "type": "split",
+    "children": [
+      {
+        "id": "2df572ee1efda24b",
+        "type": "tabs",
+        "children": [
+          {
+            "id": "c75e31e8b4d6c8bf",
+            "type": "leaf",
+            "state": {
+              "type": "backlink",
+              "state": {
+                "file": "posts/解决终端“]8003;start=5……”乱码问题.md",
+                "collapseAll": false,
+                "extraContext": false,
+                "sortOrder": "alphabetical",
+                "showSearch": false,
+                "searchQuery": "",
+                "backlinkCollapsed": false,
+                "unlinkedCollapsed": true
+              },
+              "icon": "links-coming-in",
+              "title": "解决终端“]8003;start=5……”乱码问题 的反向链接列表"
+            }
+          },
+          {
+            "id": "0fb4350666042a6c",
+            "type": "leaf",
+            "state": {
+              "type": "outgoing-link",
+              "state": {
+                "file": "posts/使用winsw将任意exe文件注册为windows服务.md",
+                "linksCollapsed": false,
+                "unlinkedCollapsed": true
+              },
+              "icon": "links-going-out",
+              "title": "使用winsw将任意exe文件注册为windows服务 的出链列表"
+            }
+          },
+          {
+            "id": "a4733e0a3a681a22",
+            "type": "leaf",
+            "state": {
+              "type": "tag",
+              "state": {
+                "sortOrder": "frequency",
+                "useHierarchy": true,
+                "showSearch": false,
+                "searchQuery": ""
+              },
+              "icon": "lucide-tags",
+              "title": "标签"
+            }
+          },
+          {
+            "id": "7b1bb4c01b4e5dec",
+            "type": "leaf",
+            "state": {
+              "type": "all-properties",
+              "state": {
+                "sortOrder": "frequency",
+                "showSearch": false,
+                "searchQuery": ""
+              },
+              "icon": "lucide-archive",
+              "title": "添加笔记属性"
+            }
+          },
+          {
+            "id": "e0902604ade073b1",
+            "type": "leaf",
+            "state": {
+              "type": "outline",
+              "state": {
+                "file": "posts/解决终端“]8003;start=5……”乱码问题.md",
+                "followCursor": false,
+                "showSearch": false,
+                "searchQuery": ""
+              },
+              "icon": "lucide-list",
+              "title": "解决终端“]8003;start=5……”乱码问题 的大纲"
+            }
+          }
+        ],
+        "currentTab": 1
+      }
+    ],
+    "direction": "horizontal",
+    "width": 300,
+    "collapsed": true
+  },
+  "left-ribbon": {
+    "hiddenItems": {
+      "bases:新建数据库": false,
+      "switcher:打开快速切换": false,
+      "graph:查看关系图谱": false,
+      "canvas:新建白板": false,
+      "daily-notes:打开/创建今天的日记": false,
+      "templates:插入模板": false,
+      "command-palette:打开命令面板": false
+    }
+  },
+  "active": "5e18f1246459bc91",
+  "lastOpenFiles": [
+    "assets/template/template.md",
+    "posts/解决由vmware导致的网络卡顿现象.md",
+    "assets/images/20260220/IMG-8096F950AB4C578597175ACE31C085C6.png",
+    "assets/images/20260220/IMG-F0F63758388A1BDAA0879B983395342D.png",
+    "assets/images/20260220",
+    "assets/images/20260220/IMG-AEB9E0464960FC2999FB3604B1579130.png",
+    "posts/vscode用snippets设置自定义代码头部注释（无插件）.md",
+    "posts/记一次解决由vmware导致的网络卡顿现象.md~",
+    "assets/images/20260220/IMG-DA1D24AE4A0BFEEAC5944D0D1A556E1F.png",
+    "assets/images/20260220/IMG-23C937BCC8C838B985A7C2D81790ED5D.png",
+    "assets/images/20260220/IMG-8B004E1AEC81AE47B7C7BBB5B57572B0.png",
+    "assets/images/20260220/IMG-B321E0B58C39B75D98886EC8100B3B27.png",
+    "posts/记一次解决由vmware导致的网络卡顿现象.md",
+    "posts/使用winsw将任意exe文件注册为windows服务.md",
+    "assets/images/20251206/IMG-C91E4D73FD00F600FFBFB4EF25FCF775.png",
+    "assets/images/20251206/IMG-CC8903F1C0703D570BD45BE353AD72AF.png",
+    "assets/images/20251206/IMG-F40E7E53A9D342E5CF77830F624BF45B.png",
+    "assets/images/20251206",
+    "posts/npm sqlite安装教程，sqlite安装失败解决办法，No module named 'distutils'.md",
+    "posts/解决终端“]8003;start=5……”乱码问题.md",
+    "assets/images/20251204",
+    "assets/images/20240505",
+    "assets/images/20230313",
+    "assets/images/20251204125658927",
+    "assets/images/npm sqlite安装教程，sqlite安装失败解决办法，No module named 'distutils'",
+    "assets/images/vscode用snippets设置自定义代码头部注释（无插件）",
+    "assets/images/解决终端“]8003;start=5……”乱码问题",
+    "posts/template.md",
+    "posts/manjaro开机启动jar包方法，亲测有效.md",
+    "posts 1/解决终端“]8003;start=5……”乱码问题.md",
+    "posts 1/npm sqlite安装教程，sqlite安装失败解决办法，No module named 'distutils'.md",
+    "2025-11-06.md",
+    "posts/demo.md",
+    "未命名.canvas",
+    "2025-12-03.md",
+    "posts/guide/index.md",
+    "posts/markdown-extended.md",
+    "posts/video.md",
+    "posts/draft.md"
+  ]
+}

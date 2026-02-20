@@ -1,0 +1,19 @@
+{
+  "language": "en",
+  "attachPath": {
+    "attachmentRoot": "assets/images",
+    "saveAttE": "inFolderBelow",
+    "attachmentPath": "${date}",
+    "attachFormat": "IMG-${md5}",
+    "type": "GLOBAL"
+  },
+  "dateFormat": "YYYYMMDD",
+  "excludeExtensionPattern": "",
+  "autoRenameAttachment": true,
+  "excludedPaths": "",
+  "excludePathsArray": [],
+  "excludeSubpaths": false,
+  "originalNameStorage": [],
+  "overridePath": {},
+  "disableNotification": false
+}

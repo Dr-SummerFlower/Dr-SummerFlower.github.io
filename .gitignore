@@ -29,6 +29,3 @@ yarn.lock
 # ide
 .idea
 *.iml
-
-# 忽略obsidian配置
-src/content/.obsidian
