@@ -1,7 +1,7 @@
 import {Link} from "react-router-dom";
 import {formatDateToYYYYMMDD} from "@/utils/date-utils";
 import {normalizeCategory} from "@/utils/common-utils";
-import Icon from "./Icon";
+import {Icon} from "@iconify/react";
 import {t} from "@/i18n";
 
 type Props = {
@@ -40,21 +40,21 @@ export default function PostMeta({
             <div className="flex flex-wrap items-center gap-x-4 gap-y-2 text-sm text-[var(--muted)]">
                 <span className="inline-flex items-center gap-1.5">
                     <Icon
-                        name="material-symbols:calendar-month-outline-rounded"
+                        icon="material-symbols:calendar-month-outline-rounded"
                         className={iconClass}
                     />
                     <span>{formatDateToYYYYMMDD(published)}</span>
                 </span>
                 {showUpdated ? (
                     <span className="inline-flex items-center gap-1.5">
-                        <Icon name="material-symbols:update-rounded" className={iconClass}/>
+                        <Icon icon="material-symbols:update-rounded" className={iconClass}/>
                         <span>
                             {t("updatedAt")} {formatDateToYYYYMMDD(updated!)}
                         </span>
                     </span>
                 ) : null}
                 <span className="inline-flex items-center gap-1.5">
-                    <Icon name="material-symbols:folder-outline-rounded" className={iconClass}/>
+                    <Icon icon="material-symbols:folder-outline-rounded" className={iconClass}/>
                     <Link
                         to={{
                             pathname: "/",
@@ -67,7 +67,7 @@ export default function PostMeta({
                 </span>
                 {typeof words === "number" ? (
                     <span className="inline-flex items-center gap-1.5">
-                        <Icon name="material-symbols:text-fields-rounded" className={iconClass}/>
+                        <Icon icon="material-symbols:text-fields-rounded" className={iconClass}/>
                         <span>
                             {words} {t("words")}
                         </span>
@@ -75,7 +75,7 @@ export default function PostMeta({
                 ) : null}
                 {typeof readingMinutes === "number" ? (
                     <span className="inline-flex items-center gap-1.5">
-                        <Icon name="material-symbols:schedule-rounded" className={iconClass}/>
+                        <Icon icon="material-symbols:schedule-rounded" className={iconClass}/>
                         <span>
                             {readingMinutes} {t("minutes")}
                         </span>
@@ -86,7 +86,7 @@ export default function PostMeta({
                 <div className="flex flex-wrap items-start gap-x-4 gap-y-2 text-sm text-[var(--muted)]">
                     <span className="inline-flex items-start gap-1.5">
                         <Icon
-                            name="material-symbols:tag-outline-rounded"
+                            icon="material-symbols:tag-outline-rounded"
                             className={`${iconClass} mt-0.5`}
                         />
                         <span className="flex flex-wrap gap-1.5">

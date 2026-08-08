@@ -1,4 +1,4 @@
-import Icon from "./Icon";
+import {Icon} from "@iconify/react";
 import {classNames} from "@/utils/common-utils";
 import {useUIStore} from "@/store/ui";
 
@@ -24,7 +24,7 @@ export default function BackToTop({docked = false}: Props) {
                     : "pointer-events-none translate-y-3 opacity-0",
             )}
         >
-            <Icon name="material-symbols:keyboard-arrow-up-rounded" className="h-6 w-6"/>
+            <Icon icon="material-symbols:keyboard-arrow-up-rounded" className="h-6 w-6"/>
         </button>
     );
 }

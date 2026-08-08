@@ -1,6 +1,6 @@
 import {Link} from "react-router-dom";
 import {profileConfig, withSiteBasePath} from "@/config";
-import Icon from "../Icon";
+import {Icon} from "@iconify/react";
 import {t} from "@/i18n";
 import {classNames} from "@/utils/common-utils";
 import type {CountItem} from "@/types/post";
@@ -63,10 +63,12 @@ export default function SideBar({categories, tags, className}: Props) {
                                     title={link.name}
                                     className="inline-flex h-10 w-10 items-center justify-center rounded-full border border-black/10 text-[var(--primary-text)] transition active:scale-[0.97] hover:border-[var(--primary)] hover:text-[var(--primary)] dark:border-white/10 max-lg:h-9 max-lg:w-9"
                                 >
-                                    <Icon
-                                        name={link.icon}
-                                        className="h-4 w-4 text-[var(--primary-text)]"
-                                    />
+                                    {link.icon ? (
+                                        <Icon
+                                            icon={link.icon}
+                                            className="h-4 w-4 text-[var(--primary-text)]"
+                                        />
+                                    ) : null}
                                 </a>
                             ))}
                         </div>
@@ -116,7 +118,7 @@ export default function SideBar({categories, tags, className}: Props) {
                 >
                     <span>{t("mobileFiltersSummary")}</span>
                     <Icon
-                        name="material-symbols:expand-more-rounded"
+                        icon="material-symbols:expand-more-rounded"
                         className="h-5 w-5 shrink-0 text-[var(--muted)] transition-transform group-open:rotate-180"
                     />
                 </summary>

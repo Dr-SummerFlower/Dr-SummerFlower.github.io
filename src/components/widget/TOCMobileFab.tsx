@@ -1,5 +1,5 @@
 import {useEffect, useMemo, useState} from "react";
-import Icon from "../Icon";
+import {Icon} from "@iconify/react";
 import type {HeadingItem} from "@/types/post";
 import {classNames} from "@/utils/common-utils";
 import {buildNumberedTocHeadings} from "@/utils/toc-utils";
@@ -89,7 +89,7 @@ export default function TOCMobileFab({headings, maxDepth = 3}: Props) {
                 )}
             >
                 <Icon
-                    name="material-symbols:format-list-numbered-rounded"
+                    icon="material-symbols:format-list-numbered-rounded"
                     className="h-6 w-6"
                     aria-hidden
                 />
@@ -125,7 +125,7 @@ export default function TOCMobileFab({headings, maxDepth = 3}: Props) {
                                 aria-label={t("closeMenu")}
                             >
                                 <Icon
-                                    name="material-symbols:close-rounded"
+                                    icon="material-symbols:close-rounded"
                                     className="h-5 w-5"
                                 />
                             </button>

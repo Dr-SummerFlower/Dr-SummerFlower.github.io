@@ -1,5 +1,5 @@
 import Modal from "@/components/Modal";
-import Icon from "@/components/Icon";
+import {Icon} from "@iconify/react";
 import {withSiteBasePath} from "@/config";
 import {classNames} from "@/utils/common-utils";
 import {useCallback, useState} from "react";
@@ -134,7 +134,7 @@ function PromptBlock({value, label, copyKey}: {value: string; label?: string; co
                     )}
                 >
                     <Icon
-                        name={
+                        icon={
                             copied
                                 ? "material-symbols:check-rounded"
                                 : "material-symbols:content-copy-outline-rounded"
@@ -181,7 +181,7 @@ export default function AnimaInfoModal({open, onClose}: Props) {
                 <section>
                     <h3 className="mb-2 flex items-center gap-2 text-lg font-bold text-[var(--foreground)]">
                         <Icon
-                            name="material-symbols:info-outline-rounded"
+                            icon="material-symbols:info-outline-rounded"
                             className="h-5 w-5 text-[var(--primary-text)]"
                         />
                         预览图的生成方式
@@ -203,7 +203,7 @@ export default function AnimaInfoModal({open, onClose}: Props) {
                         <div className="mb-3 flex flex-wrap items-center justify-between gap-3">
                             <h3 className="flex items-center gap-2 text-lg font-bold text-[var(--foreground)]">
                                 <Icon
-                                    name="material-symbols:download-outline-rounded"
+                                    icon="material-symbols:download-outline-rounded"
                                     className="h-5 w-5 text-[var(--primary-text)]"
                                 />
                                 示例工作流
@@ -216,7 +216,7 @@ export default function AnimaInfoModal({open, onClose}: Props) {
                                 )}
                             >
                                 <Icon
-                                    name="material-symbols:download-rounded"
+                                    icon="material-symbols:download-rounded"
                                     className="h-4.5 w-4.5"
                                 />
                                 下载 ComfyUI 工作流 JSON
@@ -249,7 +249,7 @@ export default function AnimaInfoModal({open, onClose}: Props) {
                 <section>
                     <h3 className="mb-2 flex items-center gap-2 text-lg font-bold text-[var(--foreground)]">
                         <Icon
-                            name="material-symbols:magic-button-outline"
+                            icon="material-symbols:magic-button-outline"
                             className="h-5 w-5 text-[var(--primary-text)]"
                         />
                         提示词模板

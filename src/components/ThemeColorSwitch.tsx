@@ -1,5 +1,5 @@
 import {useRef, useState} from "react";
-import Icon from "./Icon";
+import {Icon} from "@iconify/react";
 import {t} from "@/i18n";
 import {classNames} from "@/utils/common-utils";
 import {useThemeStore} from "@/store/theme";
@@ -35,7 +35,7 @@ export default function ThemeColorSwitch() {
                 }}
                 className="btn-plain scale-animation h-9 w-9 rounded-lg active:scale-90"
             >
-                <Icon name="material-symbols:palette-outline" className="text-[1.1rem]"/>
+                <Icon icon="material-symbols:palette-outline" className="text-[1.1rem]"/>
             </button>
 
             <div
@@ -61,7 +61,7 @@ export default function ThemeColorSwitch() {
                             >
                                 <div className="text-[var(--btn-content)]">
                                     <Icon
-                                        name="fa6-solid:arrow-rotate-left"
+                                        icon="fa6-solid:arrow-rotate-left"
                                         className="text-[0.875rem]"
                                     />
                                 </div>

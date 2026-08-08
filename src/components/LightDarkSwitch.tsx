@@ -1,5 +1,5 @@
 import {useEffect, useMemo, useRef, useState} from "react";
-import Icon from "./Icon";
+import {Icon} from "@iconify/react";
 import {t} from "@/i18n";
 import {classNames} from "@/utils/common-utils";
 import {useThemeStore, type ThemeMode} from "@/store/theme";
@@ -64,7 +64,7 @@ export default function LightDarkSwitch() {
                 onClick={() => setOpen((value) => !value)}
                 className="inline-flex h-9 w-9 items-center justify-center rounded-lg text-[var(--muted)] transition hover:bg-black/5 hover:text-[var(--primary)] dark:hover:bg-white/10"
             >
-                <Icon name={currentThemeItem.icon} className="h-5 w-5"/>
+                <Icon icon={currentThemeItem.icon} className="h-5 w-5"/>
             </button>
 
             <div
@@ -93,7 +93,7 @@ export default function LightDarkSwitch() {
                                 : "text-[var(--muted)] hover:bg-black/5 dark:hover:bg-white/10",
                         )}
                     >
-                        <Icon name={item.icon} className="mr-3 h-5 w-5"/>
+                        <Icon icon={item.icon} className="mr-3 h-5 w-5"/>
                         {item.label}
                     </button>
                 ))}

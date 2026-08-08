@@ -7,7 +7,7 @@ import {
     useState,
     type KeyboardEvent,
 } from "react";
-import Icon from "./Icon";
+import {Icon} from "@iconify/react";
 import {withSiteBasePath} from "@/config";
 import {t} from "@/i18n";
 import type {SearchIndexItem, SearchIndexPayload} from "@/types/search-index";
@@ -241,7 +241,7 @@ export default function NavbarSearch({
                 )}
             >
                 <Icon
-                    name="material-symbols:search-rounded"
+                    icon="material-symbols:search-rounded"
                     className="h-[1.125rem] w-[1.125rem] shrink-0 text-[var(--primary)] opacity-90"
                     aria-hidden
                 />
@@ -334,7 +334,7 @@ export default function NavbarSearch({
                                         aria-hidden
                                     >
                                         <Icon
-                                            name="material-symbols:article-outline-rounded"
+                                            icon="material-symbols:article-outline-rounded"
                                             className="h-[1.125rem] w-[1.125rem]"
                                         />
                                     </span>
@@ -344,7 +344,7 @@ export default function NavbarSearch({
                                                 {item.title}
                                             </span>
                                             <Icon
-                                                name="material-symbols:chevron-right-rounded"
+                                                icon="material-symbols:chevron-right-rounded"
                                                 className={classNames(
                                                     "mt-0.5 h-4 w-4 shrink-0 text-[var(--muted)] transition-opacity",
                                                     index === activeIndex

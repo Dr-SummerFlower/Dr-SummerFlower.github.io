@@ -4,7 +4,7 @@ import MainGridLayout from "@/layouts/MainGridLayout";
 import {useDocumentTitle} from "@/utils/seo";
 import {t} from "@/i18n";
 import {withSiteBasePath} from "@/config";
-import Icon from "@/components/Icon";
+import {Icon} from "@iconify/react";
 import ImageLightbox from "@/components/ImageLightbox";
 import AnimaInfoModal from "@/components/AnimaInfoModal";
 import {classNames} from "@/utils/common-utils";
@@ -97,7 +97,7 @@ export default function AnimaArtistsPage() {
                         className="btn-regular inline-flex shrink-0 items-center gap-1.5 rounded-full px-4 py-2 text-sm font-medium"
                     >
                         <Icon
-                            name="material-symbols:info-outline-rounded"
+                            icon="material-symbols:info-outline-rounded"
                             className="h-4.5 w-4.5"
                         />
                         生成说明 & 工作流
@@ -190,7 +190,7 @@ export default function AnimaArtistsPage() {
                                             </h2>
                                             <p className="mt-1 flex items-center gap-1.5 text-xs text-[var(--muted)]">
                                                 <Icon
-                                                    name="material-symbols:tag-outline-rounded"
+                                                    icon="material-symbols:tag-outline-rounded"
                                                     className="h-4 w-4"
                                                 />
                                                 <span>
@@ -222,7 +222,7 @@ export default function AnimaArtistsPage() {
                                         >
                                             <span className="inline-flex items-center gap-1.5">
                                                 <Icon
-                                                    name={
+                                                    icon={
                                                         copied
                                                             ? "material-symbols:check-rounded"
                                                             : "material-symbols:content-copy-outline-rounded"

@@ -1,6 +1,6 @@
 import {useCallback, useEffect, useState} from "react";
 import {createPortal} from "react-dom";
-import Icon from "./Icon";
+import {Icon} from "@iconify/react";
 import {t} from "@/i18n";
 
 type Props = {
@@ -81,7 +81,7 @@ export default function ImageLightbox({src, alt, onClose}: Props) {
                 }}
             >
                 <Icon
-                    name="material-symbols:close-rounded"
+                    icon="material-symbols:close-rounded"
                     className="h-6 w-6 text-[var(--btn-content)]"
                 />
             </button>

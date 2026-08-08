@@ -1,7 +1,7 @@
 import {useEffect, useRef, useState} from "react";
 import {Link} from "react-router-dom";
 import {getNavLinks, siteConfig} from "@/config";
-import Icon from "./Icon";
+import {Icon} from "@iconify/react";
 import LightDarkSwitch from "./LightDarkSwitch";
 import ThemeColorSwitch from "./ThemeColorSwitch";
 import NavbarSearch from "./NavbarSearch";
@@ -116,7 +116,7 @@ export default function Navbar() {
                     >
                         <span className="inline-flex items-center">
                             <Icon
-                                name="material-symbols:home-outline-rounded"
+                                icon="material-symbols:home-outline-rounded"
                                 className="mr-2 h-5 w-5 text-[var(--primary-text)]"
                             />
                             {siteConfig.title}
@@ -152,7 +152,7 @@ export default function Navbar() {
                     >
                         <span className="inline-flex min-w-0 items-center">
                             <Icon
-                                name="material-symbols:home-outline-rounded"
+                                icon="material-symbols:home-outline-rounded"
                                 className="mr-1 h-4.5 w-4.5 shrink-0 text-[var(--primary-text)]"
                             />
                             <span className="truncate">{siteConfig.title}</span>
@@ -180,7 +180,7 @@ export default function Navbar() {
                             aria-label={t("searchLabel")}
                         >
                             <Icon
-                                name={
+                                icon={
                                     mobileSearchOpen
                                         ? "material-symbols:close-rounded"
                                         : "material-symbols:search-rounded"
@@ -209,7 +209,7 @@ export default function Navbar() {
                             aria-controls="mobile-navbar-menu"
                         >
                             <Icon
-                                name={
+                                icon={
                                     mobileMenuOpen
                                         ? "material-symbols:close-rounded"
                                         : "material-symbols:menu-rounded"

@@ -1,6 +1,6 @@
 import {useCallback, useEffect, useState, type ReactNode} from "react";
 import {createPortal} from "react-dom";
-import Icon from "./Icon";
+import {Icon} from "@iconify/react";
 import {t} from "@/i18n";
 import {classNames} from "@/utils/common-utils";
 
@@ -117,7 +117,7 @@ export default function Modal({
                             className="btn-regular shrink-0 rounded-full p-2"
                         >
                             <Icon
-                                name="material-symbols:close-rounded"
+                                icon="material-symbols:close-rounded"
                                 className="h-5 w-5 text-[var(--btn-content)]"
                             />
                         </button>
