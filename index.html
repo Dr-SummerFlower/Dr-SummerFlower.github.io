@@ -1,0 +1,44 @@
+<!doctype html>
+<html lang="zh-CN">
+  <head>
+    <meta charset="UTF-8" />
+    <link rel="icon" type="image/jpeg" href="/favicon/summerflower.jpg" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover" />
+    <meta name="description" content="记录折腾、开发和日常问题解决方案的个人博客。" />
+    <meta name="theme-color" content="#7c6cf0" />
+    <link rel="manifest" href="/manifest.webmanifest" />
+    <link rel="dns-prefetch" href="https://giscus.app" />
+    <link rel="preconnect" href="https://giscus.app" crossorigin />
+    <link rel="prefetch" href="https://giscus.app/client.js" as="script" crossorigin />
+    <title>Summer Flower的个人博客 - 基于 Vite 的个人博客</title>
+  </head>
+  <body class="min-h-full antialiased">
+    <script>
+      (function () {
+        try {
+          const root = document.documentElement;
+          const storedTheme = localStorage.getItem("theme");
+          const defaultThemeMode = "auto";
+          const theme = storedTheme || defaultThemeMode;
+          if (theme === "dark") {
+            root.classList.add("dark");
+          } else if (theme === "light") {
+            root.classList.remove("dark");
+          } else if (window.matchMedia("(prefers-color-scheme: dark)").matches) {
+            root.classList.add("dark");
+          }
+          const storedHue = localStorage.getItem("hue");
+          const defaultHue = 250;
+          const fixedThemeColor = false;
+          let parsedHue = Number.parseInt(storedHue || String(defaultHue), 10);
+          if (!Number.isFinite(parsedHue)) { parsedHue = defaultHue; }
+          let normalizedHue = Math.min(360, Math.max(0, Math.round(parsedHue)));
+          if (fixedThemeColor) { normalizedHue = defaultHue; }
+          root.style.setProperty("--hue", String(normalizedHue));
+        } catch (e) {}
+      })();
+    </script>
+    <div id="root"></div>
+    <script type="module" src="/src/main.tsx"></script>
+  </body>
+</html>
