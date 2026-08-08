@@ -14,7 +14,7 @@ export const blogConfig = {
         subtitle: "基于 Vite + React 的个人博客",
         description: "记录折腾、开发和日常问题解决方案的个人博客。",
         lang: "zh-CN",
-        url: "https://Dr-SummerFlower.github.io",
+        url: "https://blog.summerflower.top",
         basePath: BASE_PATH,
         favicon: "/favicon/summerflower.jpg",
         defaultThemeMode: "auto" as const,

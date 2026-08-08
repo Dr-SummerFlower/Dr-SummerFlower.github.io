@@ -331,6 +331,24 @@ function buildRobotsTxt(): string {
     return lines.join("\n") + "\n";
 }
 
+function buildCnameContent(): string | null {
+    const rawUrl = blogConfig.site.url?.trim();
+    if (!rawUrl) return null;
+    try {
+        const host = new URL(rawUrl).hostname;
+        if (!host) return null;
+        return host + "\n";
+    } catch {
+        const stripped = rawUrl
+            .replace(/^[a-zA-Z][a-zA-Z0-9+.-]*:\/\//, "")
+            .replace(/\/.*$/, "")
+            .replace(/:\d+$/, "")
+            .trim();
+        if (!stripped) return null;
+        return stripped + "\n";
+    }
+}
+
 function buildLlmsText(
     posts: BlogPostMeta[],
     customPages: CompiledCustomPage[],
@@ -435,6 +453,7 @@ type CompiledArtifacts = {
     llmsTxt: string;
     llmsFullTxt: string;
     expressiveCodeCss: string;
+    cnameContent: string | null;
 };
 
 async function scanAndCompile(projectRoot: string): Promise<CompiledArtifacts> {
@@ -626,6 +645,7 @@ async function scanAndCompile(projectRoot: string): Promise<CompiledArtifacts> {
         llmsTxt: buildLlmsText(postsMeta, sitemapCustomPages, false),
         llmsFullTxt: buildLlmsText(postsMeta, sitemapCustomPages, true),
         expressiveCodeCss,
+        cnameContent: buildCnameContent(),
     };
 }
 
@@ -771,6 +791,9 @@ export default function contentPlugin(): Plugin {
                     if (urlPath === "/llms-full.txt") {
                         return sendText(res, a.llmsFullTxt, "text/plain");
                     }
+                    if (urlPath === "/CNAME" && a.cnameContent) {
+                        return sendText(res, a.cnameContent, "text/plain");
+                    }
 
                     next();
                 } catch (err) {
@@ -802,6 +825,9 @@ export default function contentPlugin(): Plugin {
             emit("robots.txt", a.robotsTxt);
             emit("llms.txt", a.llmsTxt);
             emit("llms-full.txt", a.llmsFullTxt);
+            if (a.cnameContent) {
+                emit("CNAME", a.cnameContent);
+            }
         },
         async writeBundle() {
             const outDir = resolved.build.outDir || "dist";
