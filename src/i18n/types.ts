@@ -56,6 +56,16 @@ export type Dictionary = {
     searchUnavailable: string;
     searchUntitled: string;
     mobileFiltersSummary: string;
+    navAnimaArtists: string;
+    animaArtistsTitle: string;
+    animaArtistsDescription: string;
+    animaArtistsSubtitle: string;
+    animaArtistsUniqueness: string;
+    animaArtistsCopy: string;
+    animaArtistsCopyName: string;
+    animaArtistsCopied: string;
+    animaArtistsLoadFailed: string;
+    animaArtistsPreview: string;
 };
 
 export type I18nKey = keyof Dictionary;

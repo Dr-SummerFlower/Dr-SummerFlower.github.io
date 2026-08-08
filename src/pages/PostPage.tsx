@@ -5,6 +5,7 @@ import MainGridLayout from "@/layouts/MainGridLayout";
 import PostMeta from "@/components/PostMeta";
 import Markdown from "@/components/misc/Markdown";
 import Giscus from "@/components/Giscus";
+import ImageLightbox from "@/components/ImageLightbox";
 import {useDocumentTitle} from "@/utils/seo";
 import {t} from "@/i18n";
 import type {BlogPostHtmlPayload, BlogPostMeta, HeadingItem} from "@/types/post";
@@ -49,6 +50,7 @@ export default function PostPage() {
     const [htmlPayload, setHtmlPayload] = useState<BlogPostHtmlPayload | null>(inline?.payload ?? null);
     const [notFound, setNotFound] = useState(false);
     const [resolvedMeta, setResolvedMeta] = useState(false);
+    const [coverLightboxSrc, setCoverLightboxSrc] = useState<string | null>(null);
 
     useEffect(() => {
         tryApplyInline();
@@ -196,16 +198,23 @@ export default function PostPage() {
 
                         {meta.image ? (
                             <div className="mt-8 overflow-hidden rounded-[1.25rem]">
-                                <img
-                                    src={meta.image}
-                                    alt={meta.title}
-                                    width={1200}
-                                    height={630}
-                                    className="h-auto w-full object-cover"
-                                    fetchPriority="high"
-                                    loading="eager"
-                                    decoding="async"
-                                />
+                                <button
+                                    type="button"
+                                    onClick={() => setCoverLightboxSrc(meta.image!)}
+                                    className="group block w-full outline-none focus-visible:ring-2 focus-visible:ring-[var(--primary)]/60"
+                                    aria-label={`${meta.title} cover preview`}
+                                >
+                                    <img
+                                        src={meta.image}
+                                        alt={meta.title}
+                                        width={1200}
+                                        height={630}
+                                        className="h-auto w-full cursor-zoom-in object-cover transition duration-300 group-hover:scale-[1.01]"
+                                        fetchPriority="high"
+                                        loading="eager"
+                                        decoding="async"
+                                    />
+                                </button>
                             </div>
                         ) : null}
 
@@ -249,6 +258,11 @@ export default function PostPage() {
                     <Giscus/>
                 </>
             ) : null}
+            <ImageLightbox
+                src={coverLightboxSrc}
+                alt={meta?.title || undefined}
+                onClose={() => setCoverLightboxSrc(null)}
+            />
         </MainGridLayout>
     );
 }

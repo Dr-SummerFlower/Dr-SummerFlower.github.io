@@ -10,7 +10,7 @@ import {classNames} from "@/utils/common-utils";
 import {useUIStore} from "@/store/ui";
 
 export default function Navbar() {
-    const navLinks = getNavLinks().map((link) => {
+    const allLinks = getNavLinks().map((link) => {
         if (link.href === "/") {
             return {...link, name: t("navHome")};
         }
@@ -22,6 +22,15 @@ export default function Navbar() {
         }
         return link;
     });
+    const aboutLink = allLinks.find((l) => l.href === "/about" || l.href === "/pages/about");
+    const otherLinks = allLinks.filter(
+        (l) => l.href !== "/about" && l.href !== "/pages/about",
+    );
+    const navLinks = [
+        ...otherLinks,
+        {name: t("navAnimaArtists"), href: "/anima-artists"},
+        ...(aboutLink ? [aboutLink] : []),
+    ];
     const [mobileMenuOpen, setMobileMenuOpen] = useState(false);
     const [mobileSearchOpen, setMobileSearchOpen] = useState(false);
     const [hiddenOnScroll, setHiddenOnScroll] = useState(false);

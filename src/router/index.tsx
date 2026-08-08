@@ -7,6 +7,7 @@ import ArchivePage from "@/pages/ArchivePage";
 import AboutPage from "@/pages/AboutPage";
 import CustomPage from "@/pages/CustomPage";
 import NotFoundPage from "@/pages/NotFoundPage";
+import AnimaArtistsPage from "@/pages/AnimaArtistsPage";
 
 const routes: RouteObject[] = [
     {
@@ -17,6 +18,7 @@ const routes: RouteObject[] = [
             {index: true, element: <HomePage/>},
             {path: "archive", element: <ArchivePage/>},
             {path: "about", element: <AboutPage/>},
+            {path: "anima-artists", element: <AnimaArtistsPage/>},
             {path: "pages/:slug", element: <CustomPage/>},
             {path: "posts/:slug", element: <PostPage/>},
             {path: "*", element: <NotFoundPage/>},

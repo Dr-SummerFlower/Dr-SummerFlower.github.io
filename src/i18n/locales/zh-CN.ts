@@ -57,4 +57,15 @@ export const zhCN: Dictionary = {
     searchUnavailable: "无法加载搜索索引，请稍后重试或检查部署配置。",
     searchUntitled: "无标题",
     mobileFiltersSummary: "分类与标签",
+    navAnimaArtists: "画师精选",
+    animaArtistsTitle: "ComfyUI 画师风格预览",
+    animaArtistsDescription: "ComfyUI 画师画风预览，支持一键复制画师名称。",
+    animaArtistsSubtitle:
+        "按独特值降序排列，点击图片放大预览，点击按钮可一键复制画师名称到剪贴板。",
+    animaArtistsUniqueness: "独特值：",
+    animaArtistsCopy: "复制",
+    animaArtistsCopyName: "复制画师名称",
+    animaArtistsCopied: "已复制",
+    animaArtistsLoadFailed: "画师数据加载失败，请稍后刷新重试。",
+    animaArtistsPreview: "预览图",
 };

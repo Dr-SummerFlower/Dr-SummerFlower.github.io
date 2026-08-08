@@ -58,4 +58,16 @@ export const enUS: Dictionary = {
         "Could not load the search index. Check your connection or deployment configuration.",
     searchUntitled: "Untitled",
     mobileFiltersSummary: "Categories & tags",
+    navAnimaArtists: "Artists",
+    animaArtistsTitle: "ComfyUI Artist Style Preview",
+    animaArtistsDescription:
+        "Preview ComfyUI artist styles with one-click copy artist name.",
+    animaArtistsSubtitle:
+        "Sorted by uniqueness score (descending). Click an image to zoom in, or use the button to copy the artist name.",
+    animaArtistsUniqueness: "Uniqueness: ",
+    animaArtistsCopy: "Copy",
+    animaArtistsCopyName: "Copy artist name",
+    animaArtistsCopied: "Copied",
+    animaArtistsLoadFailed: "Failed to load artist data. Please refresh and try again.",
+    animaArtistsPreview: "Preview",
 };
