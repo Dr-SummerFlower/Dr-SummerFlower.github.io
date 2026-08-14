@@ -120,7 +120,7 @@ export const blogConfig = {
             },
             {
                 name: "Email",
-                icon: "material-symbols:mail",
+                icon: "material-symbols:mail-rounded",
                 url: "mailto:1721807170@qq.com",
             },
         ] satisfies SocialLink[],

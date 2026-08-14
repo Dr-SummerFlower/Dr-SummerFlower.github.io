@@ -35,7 +35,7 @@ export default function ThemeColorSwitch() {
                 }}
                 className="btn-plain scale-animation h-9 w-9 rounded-lg active:scale-90"
             >
-                <Icon icon="material-symbols:palette-outline" className="text-[1.1rem]"/>
+                <Icon icon="material-symbols:palette-outline-rounded" className="text-[1.1rem]"/>
             </button>
 
             <div

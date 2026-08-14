@@ -25,7 +25,7 @@ export default function LightDarkSwitch() {
             {
                 value: "auto" as const satisfies ThemeMode,
                 label: t("themeModeAuto"),
-                icon: "material-symbols:radio-button-partial-outline",
+                icon: "material-symbols:radio-button-partial-outline-rounded",
             },
         ],
         [],

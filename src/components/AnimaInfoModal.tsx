@@ -216,7 +216,7 @@ export default function AnimaInfoModal({open, onClose}: Props) {
                                 )}
                             >
                                 <Icon
-                                    icon="material-symbols:download-rounded"
+                                    icon="material-symbols:download-outline-rounded"
                                     className="h-4.5 w-4.5"
                                 />
                                 下载 ComfyUI 工作流 JSON
