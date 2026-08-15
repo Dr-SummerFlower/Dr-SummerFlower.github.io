@@ -4,108 +4,25 @@ import type {
     ArchiveGroupItem,
     BlogPostHtmlPayload,
     BlogPostMeta,
-    CountItem,
     CustomPageContent,
     YearlyArchive,
 } from "@/types/post";
 import {withSiteBasePath} from "@/config";
+import type {
+    ContentState,
+    CustomPageMeta,
+    MetaBundle,
+    PersistedV1,
+} from "./types.js";
+import {readInlinePayload} from "./inline-reader.js";
+import {
+    CONTENT_STORE_VERSION,
+    META_CACHE_TTL_MS,
+    META_FILES,
+    fetchJson,
+} from "./fetchers.js";
 
-export type ContentStatus = "idle" | "loading" | "ready" | "error";
-
-type CustomPageMeta = {
-    slug: string;
-    title: string;
-    description: string;
-    filePath?: string;
-    showInNavbar?: boolean;
-    showInSitemap?: boolean;
-};
-
-type MetaBundle = {
-    posts: BlogPostMeta[];
-    categories: CountItem[];
-    tags: CountItem[];
-    archiveGroups: ArchiveGroupItem[];
-    yearlyArchive: YearlyArchive[];
-    customPages: CustomPageMeta[];
-};
-
-type InlineDataShape =
-    | {kind: "meta"; value: MetaBundle}
-    | {kind: "post"; value: {meta?: BlogPostMeta; payload: BlogPostHtmlPayload}}
-    | {kind: "custom-page"; value: {meta?: CustomPageMeta; payload: CustomPageContent}}
-    | {kind: "yearly-archive"; value: YearlyArchive[]}
-    | {kind: "archive-groups"; value: ArchiveGroupItem[]};
-
-type ContentState = {
-    status: ContentStatus;
-    error: string | null;
-    posts: BlogPostMeta[];
-    categories: CountItem[];
-    tags: CountItem[];
-    archiveGroups: ArchiveGroupItem[];
-    yearlyArchive: YearlyArchive[];
-    customPages: CustomPageMeta[];
-    postsHtmlBySlug: Record<string, BlogPostHtmlPayload>;
-    customPagesHtmlBySlug: Record<string, CustomPageContent>;
-    loadedMetaAt: number | null;
-    inlineRead: {
-        meta: boolean;
-        post: Record<string, boolean>;
-        customPage: Record<string, boolean>;
-        yearlyArchive: boolean;
-        archiveGroups: boolean;
-    };
-    tryApplyInline: () => void;
-    ensureMeta: (opts?: {force?: boolean}) => Promise<void>;
-    getPostHtml: (slug: string) => Promise<BlogPostHtmlPayload | null>;
-    getCustomPageHtml: (slug: string) => Promise<CustomPageContent | null>;
-    invalidate: () => void;
-};
-
-const META_FILES = [
-    {key: "posts", url: "/generated/posts.json"},
-    {key: "categories", url: "/generated/categories.json"},
-    {key: "tags", url: "/generated/tags.json"},
-    {key: "archiveGroups", url: "/generated/archive-groups.json"},
-    {key: "yearlyArchive", url: "/generated/yearly-archive.json"},
-    {key: "customPages", url: "/generated/custom-pages.json"},
-] as const;
-
-async function fetchJson<T>(url: string): Promise<T> {
-    const res = await fetch(url);
-    if (!res.ok) throw new Error(`HTTP ${res.status} while loading ${url}`);
-    return (await res.json()) as T;
-}
-
-function readInlinePayload<T extends InlineDataShape>(slug: string | null): T | null {
-    if (typeof document === "undefined") return null;
-    const selector = slug ? `script[type="application/json"][data-inline-id="${slug}"]`
-        : 'script[type="application/json"][data-inline-id="root"]';
-    const el = document.head.querySelector<HTMLScriptElement>(selector)
-        || document.body.querySelector<HTMLScriptElement>(selector);
-    if (!el?.textContent) return null;
-    try {
-        return JSON.parse(el.textContent) as T;
-    } catch {
-        return null;
-    }
-}
-
-const META_CACHE_TTL_MS = 5 * 60 * 1000;
-
-/**
- * Zustand persist 的 schema 版本号。
- * - 开发模式：HTML 缓存不持久化（import.meta.env.DEV），避免试错看旧内容。
- * - 生产模式：HTML 缓存持久化；每当内容 / 持久化结构发生不兼容变更，
- *   只需 +1 此处版本号，所有用户的 localStorage 旧缓存会被自动丢弃。
- */
-const CONTENT_STORE_VERSION = 2;
-
-type PersistedV1 = Partial<Pick<ContentState,
-    "posts" | "categories" | "tags" | "archiveGroups" | "yearlyArchive"
-    | "customPages" | "loadedMetaAt" | "postsHtmlBySlug" | "customPagesHtmlBySlug"
->>;
+export type {ContentStatus} from "./types.js";
 
 export const useContentStore = create<ContentState>()(
     persist(

@@ -1,0 +1,165 @@
+.custom-md :where(.github-card) {
+    display: none;
+}
+
+.custom-md :where(a.card-github) {
+    display: block;
+    position: relative;
+    margin: 0.5rem 0;
+    padding: 1.1rem 1.5rem;
+    border-radius: 1.25rem;
+    background: var(--license-block-bg);
+    color: var(--foreground);
+    text-decoration: none;
+}
+
+.custom-md :where(a.card-github:hover) {
+    background: var(--btn-regular-bg-hover);
+}
+
+.custom-md :where(a.card-github:active) {
+    scale: 0.98;
+    background: var(--btn-regular-bg-active);
+}
+
+.custom-md :where(.gc-titlebar) {
+    margin-bottom: 0.5rem;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    color: color-mix(in srgb, var(--foreground) 88%, var(--primary) 12%);
+    font-size: 1.2rem;
+    font-weight: 500;
+}
+
+.custom-md :where(.gc-titlebar-left) {
+    display: flex;
+    gap: 0.5rem;
+    align-items: center;
+}
+
+.custom-md :where(.gc-owner) {
+    display: flex;
+    align-items: center;
+    gap: 0.5rem;
+    font-weight: 300;
+}
+
+.custom-md :where(.gc-repo) {
+    font-weight: 700;
+}
+
+.custom-md :where(.gc-avatar) {
+    width: 1.5rem;
+    height: 1.5rem;
+    border-radius: 9999px;
+    background: var(--primary);
+    background-size: cover;
+}
+
+.custom-md :where(.gc-description) {
+    margin-bottom: 0.75rem;
+    color: var(--muted);
+    font-size: 1rem;
+    line-height: 1.5rem;
+}
+
+.custom-md :where(.gc-infobar) {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 1.2rem;
+    color: var(--muted);
+}
+
+.custom-md :where(.gc-language) {
+    display: none;
+}
+
+.custom-md :where(.gc-stars, .gc-forks, .gc-license, .github-logo) {
+    font-size: 0.875rem;
+    font-weight: 500;
+    opacity: 0.92;
+    display: inline-flex;
+    align-items: center;
+    gap: 0.4rem;
+    flex-wrap: nowrap;
+}
+
+.custom-md :where(.gc-icon) {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    color: var(--muted);
+}
+
+.custom-md :where(.gc-icon-star, .gc-icon-fork, .gc-icon-license) {
+    width: 1.1em;
+    height: 1.1em;
+}
+
+.custom-md :where(.github-logo) {
+    color: color-mix(in srgb, var(--foreground) 88%, var(--primary) 12%);
+    width: 1.5em;
+    height: 1.5em;
+    flex-shrink: 0;
+}
+
+.custom-md :where(.github-logo svg) {
+    width: 100%;
+    height: 100%;
+    display: block;
+}
+
+.custom-md :where(.gc-value) {
+    display: inline-block;
+}
+
+.custom-md :where(a.card-github.fetch-waiting) {
+    pointer-events: none;
+    opacity: 0.72;
+}
+
+.custom-md :where(a.card-github.fetch-waiting .gc-description, a.card-github.fetch-waiting .gc-infobar, a.card-github.fetch-waiting .gc-avatar) {
+    color: transparent;
+    background: var(--muted);
+    opacity: 0.4;
+    border-radius: 0.5rem;
+    animation: pulsate 2s infinite linear;
+}
+
+.custom-md :where(a.card-github.fetch-error) {
+    pointer-events: auto;
+    opacity: 1;
+}
+
+@keyframes pulsate {
+    0% {
+        opacity: 0.15;
+    }
+    50% {
+        opacity: 0.25;
+    }
+    100% {
+        opacity: 0.15;
+    }
+}
+
+@keyframes fadeIn {
+    from {
+        opacity: 0;
+    }
+    to {
+        opacity: 1;
+    }
+}
+
+@keyframes popIn {
+    0% {
+        opacity: 0;
+        transform: translateY(8px) scale(0.97);
+    }
+    100% {
+        opacity: 1;
+        transform: translateY(0) scale(1);
+    }
+}

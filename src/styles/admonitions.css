@@ -1,0 +1,94 @@
+.custom-md :where(.admonition) {
+    border-radius: 1rem;
+    padding: 1rem 1rem 0.25rem;
+    margin: 1.5rem 0;
+    border-left: 4px solid var(--admonition-color, var(--line-divider));
+    background: var(--admonition-bg, color-mix(in srgb, var(--muted) 8%, transparent));
+}
+
+.custom-md :where(.admonition-title) {
+    margin: 0 0 0.5rem;
+    font-weight: 700;
+    display: flex;
+    align-items: center;
+    gap: 0.4rem;
+    color: var(--admonition-color, var(--foreground));
+}
+
+.custom-md :where(.admonition-icon-wrap) {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    flex-shrink: 0;
+    color: var(--admonition-color, currentColor);
+}
+
+.custom-md :where(.admonition-note) {
+    --admonition-color: #3b82f6;
+    --admonition-bg: color-mix(in srgb, #3b82f6 10%, transparent);
+}
+
+.custom-md :where(.admonition-tip) {
+    --admonition-color: #10b981;
+    --admonition-bg: color-mix(in srgb, #10b981 10%, transparent);
+}
+
+.custom-md :where(.admonition-important) {
+    --admonition-color: #8b5cf6;
+    --admonition-bg: color-mix(in srgb, #8b5cf6 10%, transparent);
+}
+
+.custom-md :where(.admonition-caution) {
+    --admonition-color: #f59e0b;
+    --admonition-bg: color-mix(in srgb, #f59e0b 10%, transparent);
+}
+
+.custom-md :where(.admonition-warning) {
+    --admonition-color: #ef4444;
+    --admonition-bg: color-mix(in srgb, #ef4444 10%, transparent);
+}
+
+.custom-md :where(.admonition-details) {
+    --admonition-color: var(--muted);
+    --admonition-bg: color-mix(in srgb, var(--muted) 10%, transparent);
+}
+
+.custom-md :where(details.admonition-details summary.admonition-title) {
+    list-style: none;
+    cursor: pointer;
+    user-select: none;
+}
+
+.custom-md :where(details.admonition-details summary.admonition-title::-webkit-details-marker) {
+    display: none;
+}
+
+.custom-md :where(details.admonition-details > .admonition-body) {
+    display: grid;
+    grid-template-rows: 0fr;
+    transition: grid-template-rows 250ms ease;
+}
+
+.custom-md :where(details.admonition-details > .admonition-body > *) {
+    overflow: hidden;
+}
+
+.custom-md :where(details.admonition-details[open] > .admonition-body) {
+    grid-template-rows: 1fr;
+}
+
+.custom-md :where(details.admonition-details summary.admonition-title .admonition-icon-wrap) {
+    transition: transform 200ms ease;
+}
+
+.custom-md :where(details.admonition-details[open] summary.admonition-title .admonition-icon-wrap) {
+    transform: rotate(90deg);
+}
+
+html.dark .custom-md :where(.admonition) {
+    color: var(--tw-prose-invert-body, var(--foreground));
+}
+
+html.dark .custom-md :where(.admonition-title) {
+    color: var(--admonition-color, var(--foreground));
+}

@@ -2,8 +2,8 @@ import { fileURLToPath, URL } from 'node:url'
 import { defineConfig } from 'vite'
 import react, { reactCompilerPreset } from '@vitejs/plugin-react'
 import babel from '@rolldown/plugin-babel'
-import contentPlugin from './vite-plugin-content.ts'
-import iconifyPlugin from './vite-plugin-iconify.ts'
+import contentPlugin from './vite-plugins/content/index.ts'
+import iconifyPlugin from './vite-plugins/iconify/index.ts'
 
 // https://vite.dev/config/
 export default defineConfig({
