@@ -1,11 +1,13 @@
 import type {Plugin, Transformer} from "unified";
 import type {Node} from "unist";
 import {visit} from "unist-util-visit";
+import type {Root} from "mdast";
 import rehypeAutolinkHeadings from "rehype-autolink-headings";
 import rehypeExpressiveCode from "rehype-expressive-code";
 import type {RehypeExpressiveCodeOptions} from "rehype-expressive-code";
 import rehypeSlug from "rehype-slug";
 import rehypeStringify from "rehype-stringify";
+import rehypeRaw from "rehype-raw";
 import {pluginCollapsibleSections} from "@expressive-code/plugin-collapsible-sections";
 import {pluginLineNumbers} from "@expressive-code/plugin-line-numbers";
 import remarkDirective from "remark-directive";
@@ -13,10 +15,254 @@ import remarkGfm from "remark-gfm";
 import remarkParse from "remark-parse";
 import remarkRehype from "remark-rehype";
 import {unified} from "unified";
-import {normalizeAssetReference} from "../utils/image-manifest.ts";
+import remarkStringify from "remark-stringify";
+import React, {type ReactNode} from "react";
+import {renderToStaticMarkup} from "react-dom/server";
+import {createRequire} from "node:module";
+import {iconToSVG, iconToHTML, getIconData} from "@iconify/utils";
+import type {IconifyJSON, IconifyIcon} from "@iconify/types";
+import {normalizeAssetReference} from "../utils/image-manifest.js";
+
+const ADMONITION_ICON_NOTE = "fa6-solid:circle-info";
+const ADMONITION_ICON_TIP = "fa6-solid:lightbulb";
+const ADMONITION_ICON_IMPORTANT = "fa6-solid:circle-exclamation";
+const ADMONITION_ICON_CAUTION = "fa6-solid:triangle-exclamation";
+const ADMONITION_ICON_WARNING = "fa6-solid:circle-exclamation";
+const ADMONITION_ICON_DETAILS = "fa6-solid:chevron-right";
+const GC_ICON_GITHUB = "fa6-brands:github";
+const GC_ICON_STAR = "fa6-solid:star";
+const GC_ICON_FORK = "fa6-solid:code-fork";
+const GC_ICON_LICENSE = "fa6-solid:scale-balanced";
+
+const ADMONITION_TYPE_LIST: string[] = [
+    "note",
+    "tip",
+    "important",
+    "caution",
+    "warning",
+];
+
+const require = createRequire(import.meta.url);
+const ICON_PACKAGES: Record<string, string> = {
+    "fa6-solid": "@iconify-json/fa6-solid",
+    "fa6-brands": "@iconify-json/fa6-brands",
+    "material-symbols": "@iconify-json/material-symbols",
+};
+const loadedCollections = new Map<string, IconifyJSON>();
+
+function getCollection(prefix: string): IconifyJSON | null {
+    const cached = loadedCollections.get(prefix);
+    if (cached) return cached;
+    const pkg = ICON_PACKAGES[prefix];
+    if (!pkg) return null;
+    try {
+        const mod = require(require.resolve(`${pkg}/icons.json`));
+        const col = (mod.default ?? mod) as IconifyJSON;
+        loadedCollections.set(prefix, col);
+        return col;
+    } catch {
+        return null;
+    }
+}
+
+function buildSvgIcon(iconId: string, size = "1em", extraClass = ""): string {
+    const idx = iconId.indexOf(":");
+    if (idx <= 0) return "";
+    const prefix = iconId.slice(0, idx);
+    const name = iconId.slice(idx + 1);
+    const col = getCollection(prefix);
+    if (!col) return "";
+    const iconData = getIconData(col, name);
+    if (!iconData) return "";
+    const svgBuild = iconToSVG(iconData as unknown as IconifyIcon, {
+        height: size,
+        width: size,
+    });
+    if (!svgBuild || !svgBuild.body) return "";
+    const attributes: Record<string, string> = {...svgBuild.attributes};
+    if (!attributes.viewBox && col.width && col.height) {
+        attributes.viewBox = `0 0 ${col.width} ${col.height}`;
+    }
+    attributes["aria-hidden"] = "true";
+    attributes.focusable = "false";
+    attributes.fill = "currentColor";
+    if (extraClass) {
+        attributes.class = extraClass;
+    }
+    return iconToHTML(svgBuild.body, attributes);
+}
+
+type AdmonitionType =
+    | "note"
+    | "tip"
+    | "important"
+    | "caution"
+    | "warning"
+    | "details";
+
+type MdAdmonitionProps = {
+    type: AdmonitionType;
+    title: string;
+    iconSvg: ReactNode;
+    children?: ReactNode;
+    collapsible?: boolean;
+    defaultOpen?: boolean;
+};
+
+function MdAdmonition({
+    type,
+    title,
+    iconSvg,
+    children,
+    collapsible,
+    defaultOpen,
+}: MdAdmonitionProps) {
+    const className = `admonition admonition-${type}`;
+    const titleInner = React.createElement(
+        React.Fragment,
+        null,
+        React.createElement("span", {
+            className: "admonition-icon-wrap",
+            dangerouslySetInnerHTML: {__html: iconSvg as string},
+        }),
+        React.createElement("span", null, title),
+    );
+
+    if (collapsible || type === "details") {
+        return React.createElement(
+            "details",
+            {
+                className,
+                ...(defaultOpen ? {open: true} : {}),
+            },
+            React.createElement(
+                "summary",
+                {className: "admonition-title"},
+                titleInner,
+            ),
+            React.createElement("div", {className: "admonition-body"}, children),
+        );
+    }
+    return React.createElement(
+        "div",
+        {className},
+        React.createElement("div", {className: "admonition-title"}, titleInner),
+        React.createElement("div", {className: "admonition-body"}, children),
+    );
+}
+
+type MdGithubCardSkeletonProps = {
+    repo: string;
+    isValid: boolean;
+    owner: string;
+    repoName: string;
+    githubLogoSvg: ReactNode;
+    starIconSvg: ReactNode;
+    forkIconSvg: ReactNode;
+    licenseIconSvg: ReactNode;
+};
+
+function MdGithubCardSkeleton({
+    repo,
+    isValid,
+    owner,
+    repoName,
+    githubLogoSvg,
+    starIconSvg,
+    forkIconSvg,
+    licenseIconSvg,
+}: MdGithubCardSkeletonProps) {
+    const statusClass = isValid ? "fetch-waiting" : "fetch-error";
+    const descriptionText = isValid
+        ? "Waiting for api.github.com..."
+        : 'Invalid repository format, expected "owner/repo".';
+    const attrs: Record<string, unknown> = {
+        className: `card-github no-styling ${statusClass}`,
+        href: isValid ? `https://github.com/${repo}` : "#",
+        target: "_blank",
+        rel: "noreferrer",
+    };
+    if (isValid) {
+        attrs["data-github-card"] = repo;
+    }
+
+    const slot = (name: string) => ({["data-gc-slot"]: name});
+
+    return React.createElement(
+        "a",
+        attrs,
+        React.createElement(
+            "div",
+            {className: "gc-titlebar"},
+            React.createElement(
+                "div",
+                {className: "gc-titlebar-left"},
+                React.createElement(
+                    "div",
+                    {className: "gc-owner"},
+                    React.createElement("div", {
+                        className: "gc-avatar",
+                        ...slot("avatar"),
+                    }),
+                    React.createElement("div", {className: "gc-user"}, owner),
+                ),
+                React.createElement("div", {className: "gc-divider"}, "/"),
+                React.createElement("div", {className: "gc-repo"}, repoName),
+            ),
+            React.createElement("div", {
+                className: "github-logo",
+                dangerouslySetInnerHTML: {__html: githubLogoSvg as string},
+            }),
+        ),
+        React.createElement(
+            "div",
+            {
+                className: "gc-description",
+                ...slot("description"),
+            },
+            descriptionText,
+        ),
+        React.createElement(
+            "div",
+            {className: "gc-infobar"},
+            React.createElement(
+                "div",
+                {className: "gc-stars"},
+                React.createElement("span", {
+                    className: "gc-icon gc-icon-star",
+                    dangerouslySetInnerHTML: {__html: starIconSvg as string},
+                }),
+                React.createElement("span", {className: "gc-value", ...slot("stars")}, "00K"),
+            ),
+            React.createElement(
+                "div",
+                {className: "gc-forks"},
+                React.createElement("span", {
+                    className: "gc-icon gc-icon-fork",
+                    dangerouslySetInnerHTML: {__html: forkIconSvg as string},
+                }),
+                React.createElement("span", {className: "gc-value", ...slot("forks")}, "0K"),
+            ),
+            React.createElement(
+                "div",
+                {className: "gc-license"},
+                React.createElement("span", {
+                    className: "gc-icon gc-icon-license",
+                    dangerouslySetInnerHTML: {__html: licenseIconSvg as string},
+                }),
+                React.createElement("span", {className: "gc-value", ...slot("license")}, "no-license"),
+            ),
+            React.createElement(
+                "span",
+                {className: "gc-language", ...slot("language")},
+                "Waiting...",
+            ),
+        ),
+    );
+}
 
 const expressiveCodeOptions: RehypeExpressiveCodeOptions = {
-    themes: ["github-dark", "github-dark"],
+    themes: ["catppuccin-latte"],
     plugins: [pluginCollapsibleSections(), pluginLineNumbers()],
     defaultProps: {
         wrap: true,
@@ -28,12 +274,14 @@ const expressiveCodeOptions: RehypeExpressiveCodeOptions = {
     },
     styleOverrides: {
         codeBackground: "var(--codeblock-bg)",
-        borderRadius: "0px",
-        borderColor: "none",
+        borderRadius: "1rem",
+        borderWidth: "1px",
+        borderColor: "var(--line-divider)",
         codeFontSize: "0.875rem",
         codeFontFamily:
             "ui-monospace, SFMono-Regular, Menlo, Monaco, Consolas, 'Liberation Mono', 'Courier New', monospace",
         codeLineHeight: "1.5rem",
+        codePaddingInline: "1rem",
         frames: {
             editorBackground: "var(--codeblock-bg)",
             terminalBackground: "var(--codeblock-bg)",
@@ -44,6 +292,23 @@ const expressiveCodeOptions: RehypeExpressiveCodeOptions = {
             editorActiveTabIndicatorTopColor: "none",
             editorTabBarBorderBottomColor: "var(--codeblock-topbar-bg)",
             terminalTitlebarBorderBottomColor: "none",
+            inlineButtonBackground: "var(--codeblock-topbar-bg)",
+            inlineButtonBackgroundIdleOpacity: "0",
+            inlineButtonBackgroundHoverOrFocusOpacity: "1",
+            inlineButtonBackgroundActiveOpacity: "1",
+            inlineButtonBorderOpacity: "0",
+            inlineButtonForeground: "var(--codeblock-color)",
+            terminalTitlebarDotsOpacity: "0.15",
+            editorActiveTabBorderColor: "transparent",
+            editorTabsMarginInlineStart: "0",
+            editorTabsMarginBlockStart: "0",
+            editorTabBorderRadius: "0.5rem",
+            editorTabBarBorderColor: "transparent",
+            terminalTitlebarDotsForeground: "var(--muted)",
+            terminalTitlebarForeground: "var(--foreground)",
+            tooltipSuccessBackground: "var(--primary)",
+            tooltipSuccessForeground: "#fff",
+            terminalIcon: "var(--terminal-icon)",
         },
         textMarkers: {
             delHue: "0",
@@ -52,13 +317,17 @@ const expressiveCodeOptions: RehypeExpressiveCodeOptions = {
         },
     },
     frames: {
-        showCopyToClipboardButton: false,
+        showCopyToClipboardButton: true,
+        extractFileNameFromCode: true,
     },
+    useThemedScrollbars: true,
 };
 
 function createAssetUrl(value: string, sourcePath: string, publicRoot: string) {
     return normalizeAssetReference(value, sourcePath, publicRoot);
 }
+
+type MdastNode = Node & { children?: unknown[] };
 
 function assetLinksTransformer(sourcePath: string, publicRoot: string): Transformer<Node> {
     return (tree) => {
@@ -75,17 +344,53 @@ function assetLinksTransformer(sourcePath: string, publicRoot: string): Transfor
     };
 }
 
-const remarkCustomDirectives: Plugin<[], Node> = () => {
-    return (tree) => {
-        visit(tree, (node) => {
-            const directiveNode = node as Node & {
-                type?: string;
-                name?: string;
-                attributes?: Record<string, string>;
-                children?: unknown[];
-                data?: Record<string, unknown>;
-            };
+function renderChildrenAsMarkdown(node: MdastNode): string {
+    const tree: Root = {
+        type: "root",
+        children: (node.children ?? []) as any,
+    };
+    const f = unified().use(remarkStringify).stringify(tree as any);
+    return String(f);
+}
 
+async function renderMarkdownChildren(
+    markdown: string,
+    sourcePath: string,
+    publicRoot: string,
+): Promise<string> {
+    const file = await unified()
+        .use(remarkParse)
+        .use(remarkGfm)
+        .use(remarkDirective)
+        .use(() => assetLinksTransformer(sourcePath, publicRoot))
+        .use(remarkCustomDirectives as Plugin)
+        .use(remarkRehype, {allowDangerousHtml: true})
+        .use(rehypeRaw)
+        .use(rehypeExpressiveCode, expressiveCodeOptions)
+        .use(rehypeLazyImage as Plugin)
+        .use(rehypeStringify)
+        .process(markdown);
+    return String(file);
+}
+
+type DirectiveNode = Node & {
+    type?: string;
+    name?: string;
+    attributes?: Record<string, string>;
+    children?: unknown[];
+    data?: Record<string, unknown>;
+};
+
+const remarkCustomDirectives: Plugin<[], Node> = () => {
+    return async (tree, file: any) => {
+        const sourcePath = (file?.data?.sourcePath as string) ?? "";
+        const publicRoot = (file?.data?.publicRoot as string) ?? "";
+
+        const nodesToReplace: Array<{node: DirectiveNode; html: string}> = [];
+        const pending: Promise<void>[] = [];
+
+        visit(tree, (node: unknown) => {
+            const directiveNode = node as DirectiveNode;
             if (
                 !directiveNode.type ||
                 !["containerDirective", "leafDirective", "textDirective"].includes(
@@ -95,164 +400,125 @@ const remarkCustomDirectives: Plugin<[], Node> = () => {
                 return;
             }
 
-            const directiveName = directiveNode.name ?? "";
-            const data = (directiveNode.data ??= {});
+            const directiveName = (directiveNode.name ?? "").toLowerCase();
 
-            if (
-                ["note", "tip", "important", "caution", "warning"].includes(
-                    directiveName,
-                )
-            ) {
-                data.hName = "div";
-                data.hProperties = {
-                    className: ["admonition", `admonition-${directiveName}`],
-                };
-                data.hChildren = [
-                    {
-                        type: "element",
-                        tagName: "p",
-                        properties: {className: ["admonition-title"]},
-                        children: [{type: "text", value: directiveName.toUpperCase()}],
-                    },
-                    ...(directiveNode.children ?? []),
-                ];
+            if (ADMONITION_TYPE_LIST.includes(directiveName)) {
+                const titleRaw = (directiveNode.attributes?.title ?? "").trim();
+                const title = titleRaw || directiveName.toUpperCase();
+                const iconId = (() => {
+                    switch (directiveName as AdmonitionType) {
+                        case "note": return ADMONITION_ICON_NOTE;
+                        case "tip": return ADMONITION_ICON_TIP;
+                        case "important": return ADMONITION_ICON_IMPORTANT;
+                        case "caution": return ADMONITION_ICON_CAUTION;
+                        case "warning": return ADMONITION_ICON_WARNING;
+                        default: return ADMONITION_ICON_NOTE;
+                    }
+                })();
+                const iconSvg = buildSvgIcon(iconId);
+                const childrenMd = renderChildrenAsMarkdown(directiveNode);
+                const job = renderMarkdownChildren(
+                    childrenMd,
+                    sourcePath,
+                    publicRoot,
+                ).then((childrenHtml) => {
+                    const element = React.createElement(
+                        MdAdmonition as any,
+                        {
+                            type: directiveName as AdmonitionType,
+                            title,
+                            iconSvg,
+                            collapsible: false,
+                        },
+                        React.createElement("div", {
+                            dangerouslySetInnerHTML: {__html: childrenHtml},
+                        }),
+                    );
+                    const html = renderToStaticMarkup(element);
+                    nodesToReplace.push({node: directiveNode, html});
+                });
+                pending.push(job);
+                return;
+            }
+
+            if (directiveName === "details") {
+                const titleRaw = (directiveNode.attributes?.title ?? "").trim();
+                const defaultOpenRaw = (directiveNode.attributes?.open ?? "").trim();
+                const title = titleRaw || "Details";
+                const iconSvg = buildSvgIcon(ADMONITION_ICON_DETAILS);
+                const defaultOpen =
+                    defaultOpenRaw === "true" || defaultOpenRaw === "1";
+                const childrenMd = renderChildrenAsMarkdown(directiveNode);
+                const job = renderMarkdownChildren(
+                    childrenMd,
+                    sourcePath,
+                    publicRoot,
+                ).then((childrenHtml) => {
+                    const element = React.createElement(
+                        MdAdmonition as any,
+                        {
+                            type: "details" as AdmonitionType,
+                            title,
+                            iconSvg,
+                            collapsible: true,
+                            defaultOpen,
+                        },
+                        React.createElement("div", {
+                            dangerouslySetInnerHTML: {__html: childrenHtml},
+                        }),
+                    );
+                    const html = renderToStaticMarkup(element);
+                    nodesToReplace.push({node: directiveNode, html});
+                });
+                pending.push(job);
                 return;
             }
 
             if (directiveName === "github") {
                 const repo = (directiveNode.attributes?.repo ?? "").trim();
-                const isValidRepo = repo.includes("/") && repo.split("/").every(Boolean);
-                const cardUuid = `GC${Math.random().toString(36).slice(2, 8)}`;
-                const owner = isValidRepo ? repo.split("/")[0] : "owner";
-                const repoName = isValidRepo ? repo.split("/")[1] : "repo";
+                const isValid = repo.includes("/") && repo.split("/").every(Boolean);
+                const parts = isValid ? repo.split("/") : ["owner", "repo"];
+                const owner = parts[0] || "owner";
+                const repoName = parts[1] || "repo";
 
-                data.hName = "a";
-                data.hProperties = {
-                    className: ["card-github", "fetch-waiting", "no-styling"],
-                    id: `${cardUuid}-card`,
-                    href: isValidRepo ? `https://github.com/${repo}` : "#",
-                    target: "_blank",
-                    rel: "noreferrer",
-                    repo,
-                };
-                data.hChildren = [
+                const githubLogoSvg = buildSvgIcon(GC_ICON_GITHUB, "100%");
+                const starIconSvg = buildSvgIcon(GC_ICON_STAR);
+                const forkIconSvg = buildSvgIcon(GC_ICON_FORK);
+                const licenseIconSvg = buildSvgIcon(GC_ICON_LICENSE);
+
+                const element = React.createElement(
+                    MdGithubCardSkeleton as any,
                     {
-                        type: "element",
-                        tagName: "div",
-                        properties: {className: ["gc-titlebar"]},
-                        children: [
-                            {
-                                type: "element",
-                                tagName: "div",
-                                properties: {className: ["gc-titlebar-left"]},
-                                children: [
-                                    {
-                                        type: "element",
-                                        tagName: "div",
-                                        properties: {className: ["gc-owner"]},
-                                        children: [
-                                            {
-                                                type: "element",
-                                                tagName: "div",
-                                                properties: {
-                                                    id: `${cardUuid}-avatar`,
-                                                    className: ["gc-avatar"],
-                                                },
-                                                children: [],
-                                            },
-                                            {
-                                                type: "element",
-                                                tagName: "div",
-                                                properties: {className: ["gc-user"]},
-                                                children: [{type: "text", value: owner}],
-                                            },
-                                        ],
-                                    },
-                                    {
-                                        type: "element",
-                                        tagName: "div",
-                                        properties: {className: ["gc-divider"]},
-                                        children: [{type: "text", value: "/"}],
-                                    },
-                                    {
-                                        type: "element",
-                                        tagName: "div",
-                                        properties: {className: ["gc-repo"]},
-                                        children: [{type: "text", value: repoName}],
-                                    },
-                                ],
-                            },
-                            {
-                                type: "element",
-                                tagName: "div",
-                                properties: {className: ["github-logo"]},
-                                children: [],
-                            },
-                        ],
+                        repo,
+                        isValid,
+                        owner,
+                        repoName,
+                        githubLogoSvg,
+                        starIconSvg,
+                        forkIconSvg,
+                        licenseIconSvg,
                     },
-                    {
-                        type: "element",
-                        tagName: "div",
-                        properties: {
-                            id: `${cardUuid}-description`,
-                            className: ["gc-description"],
-                        },
-                        children: [{type: "text", value: "Waiting for api.github.com..."}],
-                    },
-                    {
-                        type: "element",
-                        tagName: "div",
-                        properties: {className: ["gc-infobar"]},
-                        children: [
-                            {
-                                type: "element",
-                                tagName: "div",
-                                properties: {id: `${cardUuid}-stars`, className: ["gc-stars"]},
-                                children: [{type: "text", value: "00K"}],
-                            },
-                            {
-                                type: "element",
-                                tagName: "div",
-                                properties: {id: `${cardUuid}-forks`, className: ["gc-forks"]},
-                                children: [{type: "text", value: "0K"}],
-                            },
-                            {
-                                type: "element",
-                                tagName: "div",
-                                properties: {id: `${cardUuid}-license`, className: ["gc-license"]},
-                                children: [{type: "text", value: "no-license"}],
-                            },
-                            {
-                                type: "element",
-                                tagName: "span",
-                                properties: {
-                                    id: `${cardUuid}-language`,
-                                    className: ["gc-language"],
-                                },
-                                children: [{type: "text", value: "Waiting..."}],
-                            },
-                        ],
-                    },
-                    {
-                        type: "element",
-                        tagName: "script",
-                        properties: {
-                            id: `${cardUuid}-script`,
-                            type: "text/javascript",
-                            defer: true,
-                        },
-                        children: [
-                            {
-                                type: "text",
-                                value: isValidRepo
-                                    ? `\n      fetch('https://api.github.com/repos/${repo}', { referrerPolicy: "no-referrer" })\n        .then(function (response) { return response.json(); })\n        .then(function (data) {\n          var descriptionEl = document.getElementById('${cardUuid}-description');\n          var languageEl = document.getElementById('${cardUuid}-language');\n          var forksEl = document.getElementById('${cardUuid}-forks');\n          var starsEl = document.getElementById('${cardUuid}-stars');\n          var avatarEl = document.getElementById('${cardUuid}-avatar');\n          var licenseEl = document.getElementById('${cardUuid}-license');\n          var cardEl = document.getElementById('${cardUuid}-card');\n          if (!descriptionEl || !languageEl || !forksEl || !starsEl || !avatarEl || !licenseEl || !cardEl) {\n            return;\n          }\n          descriptionEl.innerText = (data.description || 'Description not set').replace(/:[a-zA-Z0-9_]+:/g, '');\n          languageEl.innerText = data.language || 'Unknown';\n          forksEl.innerText = Intl.NumberFormat('en-us', { notation: 'compact', maximumFractionDigits: 1 }).format(data.forks || 0).replaceAll("\\u202f", '');\n          starsEl.innerText = Intl.NumberFormat('en-us', { notation: 'compact', maximumFractionDigits: 1 }).format(data.stargazers_count || 0).replaceAll("\\u202f", '');\n          avatarEl.style.backgroundImage = 'url(' + (data.owner && data.owner.avatar_url ? data.owner.avatar_url : '') + ')';\n          avatarEl.style.backgroundColor = 'transparent';\n          licenseEl.innerText = data.license && data.license.spdx_id ? data.license.spdx_id : 'no-license';\n          cardEl.classList.remove('fetch-waiting');\n        })\n        .catch(function () {\n          var cardEl = document.getElementById('${cardUuid}-card');\n          if (cardEl) {\n            cardEl.classList.add('fetch-error');\n          }\n        });\n      `
-                                    : `\n      var cardEl = document.getElementById('${cardUuid}-card');\n      var descriptionEl = document.getElementById('${cardUuid}-description');\n      if (cardEl) {\n        cardEl.classList.remove('fetch-waiting');\n        cardEl.classList.add('fetch-error');\n      }\n      if (descriptionEl) {\n        descriptionEl.innerText = 'Invalid repository format, expected "owner/repo".';\n      }\n      `,
-                            },
-                        ],
-                    },
-                ];
+                );
+                const html = renderToStaticMarkup(element);
+                nodesToReplace.push({node: directiveNode, html});
+                return;
             }
         });
+
+        if (pending.length > 0) {
+            await Promise.all(pending);
+        }
+
+        for (const {node, html} of nodesToReplace) {
+            const directiveNode = node as DirectiveNode;
+            const anyNode = node as any;
+            anyNode.type = "html";
+            anyNode.value = html;
+            delete directiveNode.name;
+            delete directiveNode.attributes;
+            delete directiveNode.children;
+            delete directiveNode.data;
+        }
     };
 };
 
@@ -285,10 +551,18 @@ export async function renderMarkdown(
         .use(remarkParse)
         .use(remarkGfm)
         .use(remarkDirective)
+        .use(() => (_tree: unknown, file_: any) => {
+            if (file_) {
+                const data = (file_.data ??= {});
+                data.sourcePath = sourcePath;
+                data.publicRoot = publicRoot;
+            }
+        })
         .use(() => assetLinksTransformer(sourcePath, publicRoot))
-        .use(remarkCustomDirectives)
-        .use(remarkRehype, {allowDangerousHtml: false})
-        .use(rehypeLazyImage)
+        .use(remarkCustomDirectives as Plugin)
+        .use(remarkRehype, {allowDangerousHtml: true})
+        .use(rehypeRaw)
+        .use(rehypeLazyImage as Plugin)
         .use(rehypeExpressiveCode, expressiveCodeOptions)
         .use(rehypeSlug)
         .use(rehypeAutolinkHeadings, {

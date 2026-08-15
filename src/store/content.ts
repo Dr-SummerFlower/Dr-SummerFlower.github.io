@@ -94,6 +94,19 @@ function readInlinePayload<T extends InlineDataShape>(slug: string | null): T | 
 
 const META_CACHE_TTL_MS = 5 * 60 * 1000;
 
+/**
+ * Zustand persist 的 schema 版本号。
+ * - 开发模式：HTML 缓存不持久化（import.meta.env.DEV），避免试错看旧内容。
+ * - 生产模式：HTML 缓存持久化；每当内容 / 持久化结构发生不兼容变更，
+ *   只需 +1 此处版本号，所有用户的 localStorage 旧缓存会被自动丢弃。
+ */
+const CONTENT_STORE_VERSION = 2;
+
+type PersistedV1 = Partial<Pick<ContentState,
+    "posts" | "categories" | "tags" | "archiveGroups" | "yearlyArchive"
+    | "customPages" | "loadedMetaAt" | "postsHtmlBySlug" | "customPagesHtmlBySlug"
+>>;
+
 export const useContentStore = create<ContentState>()(
     persist(
         (set, get) => ({
@@ -281,18 +294,32 @@ export const useContentStore = create<ContentState>()(
             },
         }),
         {
-            name: "summer-blog-content-v1",
-            partialize: (state) => ({
-                posts: state.posts,
-                categories: state.categories,
-                tags: state.tags,
-                archiveGroups: state.archiveGroups,
-                yearlyArchive: state.yearlyArchive,
-                customPages: state.customPages,
-                postsHtmlBySlug: state.postsHtmlBySlug,
-                customPagesHtmlBySlug: state.customPagesHtmlBySlug,
-                loadedMetaAt: state.loadedMetaAt,
-            }),
+            name: "summer-blog-content",
+            version: CONTENT_STORE_VERSION,
+            migrate: (persistedState: unknown, version): PersistedV1 => {
+                const state = (persistedState ?? {}) as PersistedV1;
+                if (version < 2) {
+                    delete state.postsHtmlBySlug;
+                    delete state.customPagesHtmlBySlug;
+                }
+                return state;
+            },
+            partialize: (state) => {
+                const base: PersistedV1 = {
+                    posts: state.posts,
+                    categories: state.categories,
+                    tags: state.tags,
+                    archiveGroups: state.archiveGroups,
+                    yearlyArchive: state.yearlyArchive,
+                    customPages: state.customPages,
+                    loadedMetaAt: state.loadedMetaAt,
+                };
+                if (import.meta.env.PROD) {
+                    base.postsHtmlBySlug = state.postsHtmlBySlug;
+                    base.customPagesHtmlBySlug = state.customPagesHtmlBySlug;
+                }
+                return base;
+            },
         },
     ),
 );

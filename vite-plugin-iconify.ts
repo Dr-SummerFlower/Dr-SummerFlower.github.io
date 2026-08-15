@@ -11,9 +11,9 @@ const VIRTUAL_ID = "virtual:iconify-registry";
 const RESOLVED_ID = "\0" + VIRTUAL_ID;
 const PLUGIN_LOG_PREFIX = "[iconify]";
 
-const ICON_JSX_ATTR_RE = /icon\s*=\s*["']([a-zA-Z0-9\-]+:[a-zA-Z0-9\-_:]+?)["']/g;
-const ICON_OBJECT_PROP_RE = /icon\s*:\s*["']([a-zA-Z0-9\-]+:[a-zA-Z0-9\-_:]+?)["']/g;
-const STRING_LITERAL_CANDIDATE_RE = /["']([a-z][a-z0-9-]*\:[a-zA-Z0-9\-_:]{3,})["']/g;
+const ICON_JSX_ATTR_RE = /icon\s*=\s*["']([a-zA-Z0-9-]+:[a-zA-Z0-9-_:]+?)["']/g;
+const ICON_OBJECT_PROP_RE = /icon\s*:\s*["']([a-zA-Z0-9-]+:[a-zA-Z0-9-_:]+?)["']/g;
+const STRING_LITERAL_CANDIDATE_RE = /["']([a-z][a-z0-9-]*:[a-zA-Z0-9-_:]{3,})["']/g;
 
 const PREFIX_TO_COLLECTION_PACKAGE: Record<string, string> = {
     "material-symbols": "@iconify-json/material-symbols",
