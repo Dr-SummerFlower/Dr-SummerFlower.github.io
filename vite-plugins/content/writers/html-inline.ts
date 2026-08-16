@@ -3,7 +3,8 @@ import fsPromises from "node:fs/promises";
 import path from "node:path";
 
 import type {ResolvedConfig} from "vite";
-import {blogConfig, seoConfig} from "../../../src/config.ts";
+import {blogConfig} from "../../../src/config.ts";
+import {seoConfig} from "../../../src/lib/config/derived.config.ts";
 import {hueToHex, escapeHtml} from "./../utils/color-utils.ts";
 import type {CompiledArtifacts} from "../types.ts";
 import type {HeadingItem} from "../../../src/types/post.ts";

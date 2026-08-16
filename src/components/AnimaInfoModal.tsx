@@ -1,6 +1,6 @@
 import Modal from "@/components/Modal";
 import {Icon} from "@iconify/react";
-import {withSiteBasePath} from "@/config";
+import {withSiteBasePath} from "@/lib/config/helpers/url.ts";
 import {classNames} from "@/utils/common-utils";
 import {useCallback, useState} from "react";
 

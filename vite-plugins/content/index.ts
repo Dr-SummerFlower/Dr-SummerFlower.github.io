@@ -1,7 +1,7 @@
 import path from "node:path";
 import type {Plugin, ResolvedConfig, ViteDevServer} from "vite";
 
-import {contentConfig} from "./../../src/config.ts";
+import {contentConfig} from "./../../src/lib/config/derived.config.ts";
 
 import {
     EC_VIRTUAL_ID,

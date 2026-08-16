@@ -1,4 +1,5 @@
-import {licenseConfig, profileConfig, withSiteBasePath} from "@/config";
+import {licenseConfig, profileConfig} from "@/lib/config/derived.config.ts";
+import {withSiteBasePath} from "@/lib/config/helpers/url.ts";
 import {t} from "@/i18n";
 
 export default function Footer() {

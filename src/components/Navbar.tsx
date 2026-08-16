@@ -1,6 +1,7 @@
 import {useEffect, useRef, useState} from "react";
 import {Link} from "react-router-dom";
-import {getNavLinks, siteConfig} from "@/config";
+import {siteConfig} from "@/lib/config/derived.config.ts";
+import {getNavLinks} from "@/lib/config/helpers/navigation.ts";
 import {Icon} from "@iconify/react";
 import LightDarkSwitch from "./LightDarkSwitch";
 import ThemeColorSwitch from "./ThemeColorSwitch";

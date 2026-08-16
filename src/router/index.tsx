@@ -1,5 +1,5 @@
 import {createBrowserRouter, type RouteObject} from "react-router-dom";
-import {withSiteBasePath} from "@/config";
+import {withSiteBasePath} from "@/lib/config/helpers/url.ts";
 import {RootLayout} from "@/layouts/RootLayout";
 import HomePage from "@/pages/HomePage";
 import PostPage from "@/pages/PostPage";

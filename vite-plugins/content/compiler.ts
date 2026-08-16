@@ -1,7 +1,8 @@
 import fsPromises from "node:fs/promises";
 import path from "node:path";
 
-import {contentConfig, getCustomPages} from "../../src/config.ts";
+import {contentConfig} from "../../src/lib/config/derived.config.ts";
+import {getCustomPages} from "../../src/lib/config/helpers/navigation.ts";
 import {markdownToPlainTextForSearch} from "../../src/utils/markdown-plaintext.ts";
 import {normalizeAssetReference} from "../../src/utils/image-manifest.ts";
 import {renderMarkdown} from "../../src/lib/markdown/index.ts";

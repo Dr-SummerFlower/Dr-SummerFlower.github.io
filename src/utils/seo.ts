@@ -1,6 +1,6 @@
 import {useEffect} from "react";
-import {getAbsoluteUrl, seoConfig, siteConfig} from "@/config";
-import {withSiteBasePath} from "@/config";
+import {seoConfig, siteConfig} from "@/lib/config/derived.config.ts";
+import {getAbsoluteUrl, withSiteBasePath} from "@/lib/config/helpers/url.ts";
 
 function upsertMeta(selector: string, attrs: Record<string, string>) {
     const existing = document.head.querySelector<HTMLMetaElement>(selector);

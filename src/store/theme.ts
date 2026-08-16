@@ -1,6 +1,6 @@
 import {create} from "zustand";
 import {persist} from "zustand/middleware";
-import {siteConfig} from "@/config";
+import {siteConfig} from "@/lib/config/derived.config.ts";
 
 export type ThemeMode = "light" | "dark" | "auto";
 

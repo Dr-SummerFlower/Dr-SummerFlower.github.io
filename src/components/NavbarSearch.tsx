@@ -8,7 +8,7 @@ import {
     type KeyboardEvent,
 } from "react";
 import {Icon} from "@iconify/react";
-import {withSiteBasePath} from "@/config";
+import {withSiteBasePath} from "@/lib/config/helpers/url.ts";
 import {t} from "@/i18n";
 import type {SearchIndexItem, SearchIndexPayload} from "@/types/search-index";
 import {classNames} from "@/utils/common-utils";

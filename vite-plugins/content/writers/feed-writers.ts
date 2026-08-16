@@ -1,11 +1,8 @@
 import type {NavLink} from "../../../src/types/config.ts";
-import {
-    blogConfig,
-    getAbsoluteUrl,
-    getNavLinks,
-    seoConfig,
-    siteConfig,
-} from "../../../src/config.ts";
+import {blogConfig} from "../../../src/config.ts";
+import {seoConfig, siteConfig} from "../../../src/lib/config/derived.config.ts";
+import {getAbsoluteUrl} from "../../../src/lib/config/helpers/url.ts";
+import {getNavLinks} from "../../../src/lib/config/helpers/navigation.ts";
 import type {BlogPostMeta} from "../../../src/types/post.ts";
 import type {CompiledCustomPage} from "../types.ts";
 import {xmlEscape} from "./../utils/color-utils.ts";

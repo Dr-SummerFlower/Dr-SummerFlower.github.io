@@ -1,5 +1,6 @@
 import type {ReactNode} from "react";
-import {siteConfig, withSiteBasePath} from "@/config";
+import {siteConfig} from "@/lib/config/derived.config.ts";
+import {withSiteBasePath} from "@/lib/config/helpers/url.ts";
 import Footer from "@/components/Footer";
 import Navbar from "@/components/Navbar";
 import BackToTop from "@/components/BackToTop";

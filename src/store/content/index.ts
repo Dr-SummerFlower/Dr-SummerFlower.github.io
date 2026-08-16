@@ -7,7 +7,7 @@ import type {
     CustomPageContent,
     YearlyArchive,
 } from "@/types/post";
-import {withSiteBasePath} from "@/config";
+import {withSiteBasePath} from "@/lib/config/helpers/url.ts";
 import type {
     ContentState,
     CustomPageMeta,

@@ -3,7 +3,7 @@ import {Icon} from "@iconify/react";
 import {t} from "@/i18n";
 import {classNames} from "@/utils/common-utils";
 import {useThemeStore} from "@/store/theme";
-import {siteConfig} from "@/config";
+import {siteConfig} from "@/lib/config/derived.config.ts";
 
 export default function ThemeColorSwitch() {
     const hue = useThemeStore((s) => s.hue);

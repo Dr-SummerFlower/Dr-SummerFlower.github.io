@@ -1,5 +1,6 @@
 import {Link} from "react-router-dom";
-import {profileConfig, withSiteBasePath} from "@/config";
+import {profileConfig} from "@/lib/config/derived.config.ts";
+import {withSiteBasePath} from "@/lib/config/helpers/url.ts";
 import {Icon} from "@iconify/react";
 import {t} from "@/i18n";
 import {classNames} from "@/utils/common-utils";

@@ -1,5 +1,5 @@
 import path from "node:path";
-import {withSiteBasePath} from "../config.ts";
+import {withSiteBasePath} from "../lib/config/helpers/url.ts";
 
 function toPosix(filePath: string) {
     return filePath.replace(/\\/g, "/");

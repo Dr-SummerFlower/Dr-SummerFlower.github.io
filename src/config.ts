@@ -2,7 +2,6 @@ import type {
     CustomPageItem,
     GiscusConfig,
     NavLink,
-    SeoConfig,
     SocialLink,
 } from "./types/config.ts";
 
@@ -155,91 +154,3 @@ export const blogConfig = {
         },
     },
 } as const;
-
-export function withSiteBasePath(href: string): string {
-    const base: string = blogConfig.site.basePath;
-    if (!href || !base) {
-        return href;
-    }
-    if (href.startsWith("http://") || href.startsWith("https://") || href.startsWith("data:")) {
-        return href;
-    }
-    if (!href.startsWith("/")) {
-        return href;
-    }
-    const normalized = base.endsWith("/") ? base.slice(0, -1) : base;
-    return `${normalized}${href}`;
-}
-
-export const siteConfig = {
-    title: blogConfig.site.title,
-    subtitle: blogConfig.site.subtitle,
-    description: blogConfig.site.description,
-    site: blogConfig.site.url,
-    lang: blogConfig.site.lang,
-    contentDir: blogConfig.content.rootDir,
-    themeColor: blogConfig.theme.color,
-    banner: blogConfig.theme.banner,
-    toc: blogConfig.theme.toc,
-    favicon: blogConfig.site.favicon,
-    defaultThemeMode: blogConfig.site.defaultThemeMode,
-    font: blogConfig.site.font,
-};
-
-const customPages: CustomPageItem[] = blogConfig.navigation.customPages.map((item) => ({
-    ...item,
-    filePath: item.filePath || `${blogConfig.content.pagesDir}/${item.slug}.md`,
-}));
-const navLinks: NavLink[] = [...blogConfig.navigation.links];
-
-export const profileConfig = blogConfig.profile;
-
-export const licenseConfig = blogConfig.license;
-
-export const giscusConfig: GiscusConfig = {
-    ...blogConfig.comment.giscus,
-    lang: blogConfig.comment.giscus.lang,
-};
-
-export const seoConfig: SeoConfig = {
-    defaultTitle: `${siteConfig.title} - ${siteConfig.subtitle}`,
-    defaultDescription: siteConfig.description,
-    defaultOgImage: blogConfig.seo.defaultOgImage || undefined,
-    robots: {
-        allow: blogConfig.seo.robots.allow,
-        disallow: [...blogConfig.seo.robots.disallow],
-    },
-};
-
-export const contentConfig = {
-    rootDir: blogConfig.content.rootDir,
-    postsDir: blogConfig.content.postsDir,
-    pagesDir: blogConfig.content.pagesDir,
-    specDir: blogConfig.content.specDir,
-    includeDrafts: blogConfig.content.includeDrafts,
-};
-
-export function getCustomPages() {
-    return customPages;
-}
-
-export function getNavLinks() {
-    const dynamicLinks = customPages
-        .filter((item) => item.showInNavbar)
-        .map((item) => ({
-            name: item.title,
-            href: item.slug === "about" ? "/about" : `/pages/${item.slug}`,
-        }));
-
-    return [...navLinks, ...dynamicLinks];
-}
-
-export function getAbsoluteUrl(pathname = "/") {
-    if (pathname.startsWith("http://") || pathname.startsWith("https://")) {
-        return pathname;
-    }
-    const normalizedPath = pathname.startsWith("/") ? pathname : `/${pathname}`;
-    const pathWithBase = withSiteBasePath(normalizedPath);
-    const base = siteConfig.site.replace(/\/$/, "");
-    return `${base}${pathWithBase}`;
-}

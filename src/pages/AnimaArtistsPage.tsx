@@ -3,7 +3,7 @@ import {useContentStore} from "@/store/content";
 import MainGridLayout from "@/layouts/MainGridLayout";
 import {useDocumentTitle} from "@/utils/seo";
 import {t} from "@/i18n";
-import {withSiteBasePath} from "@/config";
+import {withSiteBasePath} from "@/lib/config/helpers/url.ts";
 import {Icon} from "@iconify/react";
 import ImageLightbox from "@/components/ImageLightbox";
 import AnimaInfoModal from "@/components/AnimaInfoModal";

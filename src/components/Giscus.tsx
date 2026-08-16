@@ -1,5 +1,5 @@
 import {useCallback, useEffect, useRef, useState} from "react";
-import {giscusConfig} from "@/config";
+import {giscusConfig} from "@/lib/config/derived.config.ts";
 
 type LoadState = "idle" | "loading" | "ready" | "error";
 

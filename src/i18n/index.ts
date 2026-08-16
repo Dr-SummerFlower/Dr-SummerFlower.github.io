@@ -1,4 +1,4 @@
-import {siteConfig} from "@/config";
+import {siteConfig} from "@/lib/config/derived.config.ts";
 import {resolveLocale, type SupportedLocale} from "@/i18n/locales";
 import {LOCALE_REGISTRY, DEFAULT_LOCALE_DEF} from "@/i18n/locales/_registry";
 import type {Dictionary, I18nKey, LocaleDefinition, TranslationParams} from "@/i18n/types";
