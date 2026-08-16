@@ -43,7 +43,7 @@ npm install
 
 ### 2. 改好你的配置
 
-打开 [`src/config.ts`](file:///d:/dev/develop/temp/summer_blog/src/config.ts)，修改 `blogConfig` 里这些：
+打开 [`src/config.ts`](./src/config.ts)，修改 `blogConfig` 里这些：
 
 - `site.title / subtitle / url / lang` — 站点基础信息
 - `profile.name / avatar / bio / links[]` — 侧边栏资料 & 社交链接
