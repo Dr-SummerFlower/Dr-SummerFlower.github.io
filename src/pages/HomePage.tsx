@@ -17,7 +17,7 @@ export default function HomePage() {
         ensureMeta().catch(() => undefined);
     }, [ensureMeta, tryApplyInline]);
 
-    useDocumentTitle(t("homeTitle"), undefined, "/");
+    useDocumentTitle(t("home.title"), undefined, "/");
 
     return (
         <MainGridLayout categories={categories} tags={tags} heroMode="home">

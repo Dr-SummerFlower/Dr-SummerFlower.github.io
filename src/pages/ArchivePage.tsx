@@ -43,8 +43,8 @@ export default function ArchivePage() {
     }, [ensureMeta, tryApplyInline]);
 
     useDocumentTitle(
-        t("archiveTitle"),
-        t("archiveMetadataDescription"),
+        t("archive.title"),
+        t("archive.metadataDescription"),
         "/archive",
     );
 
@@ -72,10 +72,10 @@ export default function ArchivePage() {
         <MainGridLayout categories={categories} tags={tags}>
             <section className="card px-6 py-6 md:px-8">
                 <h1 className="text-3xl font-bold text-[var(--foreground)]">
-                    {t("archiveTitle")}
+                    {t("archive.title")}
                 </h1>
                 <p className="mt-2 text-sm text-[var(--muted)]">
-                    {t("archiveDescription")}
+                    {t("archive.description")}
                 </p>
 
                 <div className="mt-8 space-y-10">
@@ -84,10 +84,10 @@ export default function ArchivePage() {
                             <div className="flex items-center gap-3">
                                 <span className="h-3 w-3 rounded-full bg-[var(--primary)] ring-4 ring-black/10 dark:ring-white/20"/>
                                 <h2 className="text-xl font-semibold text-[var(--foreground)]">
-                                    {t("archiveYearTitle", {year: group.year})}
+                                    {t("archive.yearTitle", {year: group.year})}
                                 </h2>
                                 <span className="text-sm text-[var(--muted)]">
-                                    {t("archivePostCount", {count: group.items.length})}
+                                    {t("archive.postCount", {count: group.items.length})}
                                 </span>
                             </div>
 

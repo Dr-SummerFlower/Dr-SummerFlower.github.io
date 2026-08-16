@@ -20,7 +20,7 @@ export default function Footer() {
                 >
                     {profileConfig.name}
                 </a>
-                , {t("footerAdoptedLicense")}{" "}
+                , {t("footer.adoptedLicense")}{" "}
                 <a
                     href={licenseConfig.url}
                     target="_blank"
@@ -29,7 +29,7 @@ export default function Footer() {
                 >
                     {licenseConfig.name}
                 </a>{" "}
-                {t("licenseSuffix")}
+                {t("footer.licenseSuffix")}
             </p>
             <p className="mt-2">
                 <a href={withSiteBasePath("/rss.xml")} className={linkClass}>
@@ -41,7 +41,7 @@ export default function Footer() {
                 </a>
             </p>
             <p className="mt-2">
-                {t("footerBuiltWith")}{" "}
+                {t("footer.builtWith")}{" "}
                 <a
                     href="https://vite.dev"
                     target="_blank"
@@ -59,7 +59,7 @@ export default function Footer() {
                 >
                     React
                 </a>
-                , {t("footerThemeInspiredBy")}{" "}
+                , {t("footer.themeInspiredBy")}{" "}
                 <a
                     href="https://github.com/saicaca/fuwari"
                     target="_blank"

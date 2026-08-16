@@ -120,22 +120,22 @@ export default function HomePostList({ posts }: Props) {
         <div className="space-y-4">
             {activeCategory || activeTag ? (
                 <section className="card px-6 py-4 text-sm text-[var(--muted)]">
-                    {t("homeCurrentFilter")}
+                    {t("home.currentFilter")}
                     {activeCategory ? (
                         <span className="ml-2 rounded-full bg-[var(--primary-bg)] px-3 py-1 text-xs text-[var(--primary-text)]">
-                            {t("homeFilterCategory", { category: activeCategory })}
+                            {t("home.filterCategory", { category: activeCategory })}
                         </span>
                     ) : null}
                     {activeTag ? (
                         <span className="ml-2 rounded-full bg-[var(--primary-bg)] px-3 py-1 text-xs text-[var(--primary-text)]">
-                            {t("homeFilterTag", { tag: activeTag })}
+                            {t("home.filterTag", { tag: activeTag })}
                         </span>
                     ) : null}
                     <Link
                         to="/"
                         className="ml-3 text-xs underline decoration-dotted underline-offset-4 hover:text-[var(--primary)]"
                     >
-                        {t("homeClearFilter")}
+                        {t("home.clearFilter")}
                     </Link>
                 </section>
             ) : null}
@@ -144,7 +144,7 @@ export default function HomePostList({ posts }: Props) {
             ))}
             {filteredPosts.length === 0 ? (
                 <section className="card px-6 py-8 text-center text-sm text-[var(--muted)]">
-                    {t("homeNoFilteredPosts")}
+                    {t("home.noFilteredPosts")}
                 </section>
             ) : null}
         </div>

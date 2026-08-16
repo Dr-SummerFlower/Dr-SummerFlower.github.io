@@ -80,7 +80,7 @@ export default function TOCMobileFab({headings, maxDepth = 3}: Props) {
         <>
             <button
                 type="button"
-                aria-label={t("tocTitle")}
+                aria-label={t("toc.title")}
                 aria-expanded={mobileOpen}
                 aria-controls="mobile-toc-panel"
                 onClick={() => setMobileOpen((open) => !open)}
@@ -99,7 +99,7 @@ export default function TOCMobileFab({headings, maxDepth = 3}: Props) {
                 <>
                     <button
                         type="button"
-                        aria-label={t("closeMenu")}
+                        aria-label={t("ui.closeMenu")}
                         className="fixed inset-0 z-[55] bg-black/45 backdrop-blur-[2px] transition"
                         onClick={() => setMobileOpen(false)}
                     />
@@ -107,7 +107,7 @@ export default function TOCMobileFab({headings, maxDepth = 3}: Props) {
                         id="mobile-toc-panel"
                         role="dialog"
                         aria-modal="true"
-                        aria-label={t("tocAriaLabel")}
+                        aria-label={t("toc.ariaLabel")}
                         className="fixed inset-x-0 bottom-0 z-[60] flex max-h-[min(78vh,32rem)] flex-col rounded-t-[1.35rem] border border-black/10 bg-[var(--float-panel-bg)] shadow-[0_-8px_40px_-12px_rgba(15,23,42,0.45)] dark:border-white/10"
                         style={{
                             paddingBottom:
@@ -116,13 +116,13 @@ export default function TOCMobileFab({headings, maxDepth = 3}: Props) {
                     >
                         <div className="flex shrink-0 items-center justify-between gap-3 border-b border-black/10 px-4 py-3 dark:border-white/10">
                             <div className="text-sm font-semibold text-[var(--primary-text)]">
-                                {t("tocTitle")}
+                                {t("toc.title")}
                             </div>
                             <button
                                 type="button"
                                 onClick={() => setMobileOpen(false)}
                                 className="btn-plain inline-flex h-10 w-10 shrink-0 items-center justify-center rounded-full border border-black/10 dark:border-white/10"
-                                aria-label={t("closeMenu")}
+                                aria-label={t("ui.closeMenu")}
                             >
                                 <Icon
                                     icon="material-symbols:close-rounded"

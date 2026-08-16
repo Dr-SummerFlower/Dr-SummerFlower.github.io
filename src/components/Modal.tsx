@@ -113,7 +113,7 @@ export default function Modal({
                         <button
                             type="button"
                             onClick={handleCloseClick}
-                            aria-label={t("closeMenu")}
+                            aria-label={t("ui.closeMenu")}
                             className="btn-regular shrink-0 rounded-full p-2"
                         >
                             <Icon

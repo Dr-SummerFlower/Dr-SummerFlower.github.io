@@ -79,7 +79,7 @@ export default function CustomPage() {
     }, [ensureMeta, getCustomPageHtml, inline, slug]);
 
     useDocumentTitle(
-        notFound ? t("customPageNotFound") : page?.title,
+        notFound ? t("error.customPageNotFound") : page?.title,
         page?.description,
         `/pages/${slug}`,
     );
@@ -94,7 +94,7 @@ export default function CustomPage() {
         return (
             <MainGridLayout categories={categories} tags={tags}>
                 <section className="card px-6 py-8 text-center text-sm text-[var(--muted)]">
-                    {t("customPageNotFound")}
+                    {t("error.customPageNotFound")}
                 </section>
             </MainGridLayout>
         );

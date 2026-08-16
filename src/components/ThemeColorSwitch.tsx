@@ -24,7 +24,7 @@ export default function ThemeColorSwitch() {
             onMouseLeave={() => setOpen(false)}
         >
             <button
-                aria-label={t("themeColor")}
+                aria-label={t("theme.color")}
                 type="button"
                 onClick={() => setOpen((value) => !value)}
                 onBlur={(e) => {
@@ -49,9 +49,9 @@ export default function ThemeColorSwitch() {
                         <div
                             className="relative ml-3 flex gap-2 text-lg font-bold text-[var(--foreground)] transition before:absolute before:-left-3 before:top-[0.33rem] before:h-4 before:w-1 before:rounded-md before:bg-[var(--primary)]"
                         >
-                            {t("themeColor")}
+                            {t("theme.color")}
                             <button
-                                aria-label={t("resetThemeColor")}
+                                aria-label={t("theme.reset")}
                                 type="button"
                                 onClick={() => resetHue()}
                                 className={classNames(
@@ -76,7 +76,7 @@ export default function ThemeColorSwitch() {
 
                     <div className="theme-hue-slider-shell h-6 w-full select-none rounded px-1">
                         <input
-                            aria-label={t("themeColor")}
+                            aria-label={t("theme.color")}
                             type="range"
                             min={0}
                             max={360}

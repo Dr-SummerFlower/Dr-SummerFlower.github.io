@@ -63,11 +63,11 @@ export default function TOC({headings, maxDepth = 3}: Props) {
 
     return (
         <nav
-            aria-label={t("tocAriaLabel")}
+            aria-label={t("toc.ariaLabel")}
             className="main-feed-layout__toc card sticky top-[calc(var(--nav-offset)+0.5rem)] hidden max-h-[calc(100vh-var(--nav-offset)-1rem)] overflow-y-auto p-4 xl:block"
         >
             <div className="mb-3 text-sm font-semibold tracking-wide text-[var(--primary-text)]">
-                {t("tocTitle")}
+                {t("toc.title")}
             </div>
             <div className="space-y-1">
                 {filteredHeadings.map((heading) => (

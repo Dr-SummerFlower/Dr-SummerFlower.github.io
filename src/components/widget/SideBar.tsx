@@ -79,7 +79,7 @@ export default function SideBar({categories, tags, className}: Props) {
             <div className="hidden space-y-4 lg:sticky lg:top-[calc(var(--nav-offset)+0.5rem)] lg:block lg:max-h-[calc(100vh-var(--nav-offset)-1rem)] lg:overflow-y-auto">
                 <section className="card overflow-hidden p-4">
                     <h3 className="mb-3 text-sm font-semibold tracking-wide text-[var(--foreground)]">
-                        {t("categoryTitle")}
+                        {t("sidebar.categoryTitle")}
                     </h3>
                     <div className="flex flex-wrap gap-2">
                         {categories.map((category) => (
@@ -96,7 +96,7 @@ export default function SideBar({categories, tags, className}: Props) {
 
                 <section className="card overflow-hidden p-4">
                     <h3 className="mb-3 text-sm font-semibold tracking-wide text-[var(--foreground)]">
-                        {t("tagTitle")}
+                        {t("sidebar.tagTitle")}
                     </h3>
                     <div className="flex flex-wrap gap-2">
                         {tags.map((tag) => (
@@ -116,7 +116,7 @@ export default function SideBar({categories, tags, className}: Props) {
                 <summary
                     className="flex cursor-pointer list-none items-center justify-between gap-3 px-4 py-3.5 text-sm font-semibold text-[var(--foreground)] transition marker:content-none [&::-webkit-details-marker]:hidden active:bg-black/[0.03] dark:active:bg-white/[0.04]"
                 >
-                    <span>{t("mobileFiltersSummary")}</span>
+                    <span>{t("sidebar.mobileFiltersSummary")}</span>
                     <Icon
                         icon="material-symbols:expand-more-rounded"
                         className="h-5 w-5 shrink-0 text-[var(--muted)] transition-transform group-open:rotate-180"
@@ -125,7 +125,7 @@ export default function SideBar({categories, tags, className}: Props) {
                 <div className="space-y-4 border-t border-black/10 px-4 py-4 dark:border-white/10">
                     <div>
                         <h3 className="mb-2 text-xs font-semibold uppercase tracking-wide text-[var(--muted)]">
-                            {t("categoryTitle")}
+                            {t("sidebar.categoryTitle")}
                         </h3>
                         <div className="flex flex-wrap gap-2">
                             {categories.map((category) => (
@@ -141,7 +141,7 @@ export default function SideBar({categories, tags, className}: Props) {
                     </div>
                     <div>
                         <h3 className="mb-2 text-xs font-semibold uppercase tracking-wide text-[var(--muted)]">
-                            {t("tagTitle")}
+                            {t("sidebar.tagTitle")}
                         </h3>
                         <div className="flex flex-wrap gap-2">
                             {tags.map((tag) => (

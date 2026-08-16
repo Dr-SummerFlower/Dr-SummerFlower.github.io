@@ -71,8 +71,8 @@ export default function AboutPage() {
     }, [ensureMeta, getCustomPageHtml, inline]);
 
     useDocumentTitle(
-        notFound ? t("customPageNotFound") : t("aboutTitle"),
-        t("aboutDescription"),
+        notFound ? t("error.customPageNotFound") : t("about.title"),
+        t("about.description"),
         "/about",
     );
 
@@ -82,7 +82,7 @@ export default function AboutPage() {
         return (
             <MainGridLayout categories={categories} tags={tags}>
                 <section className="card px-6 py-8 text-center text-sm text-[var(--muted)]">
-                    {t("customPageNotFound")}
+                    {t("error.customPageNotFound")}
                 </section>
             </MainGridLayout>
         );

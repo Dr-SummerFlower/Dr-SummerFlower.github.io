@@ -29,7 +29,7 @@ export default function AnimaArtistsPage() {
     const [lightboxSrc, setLightboxSrc] = useState<string | null>(null);
     const [infoOpen, setInfoOpen] = useState(false);
 
-    useDocumentTitle(t("animaArtistsTitle"), t("animaArtistsDescription"), "/anima-artists");
+    useDocumentTitle(t("animaArtists.title"), t("animaArtists.description"), "/anima-artists");
 
     useEffect(() => {
         let cancelled = false;
@@ -85,10 +85,10 @@ export default function AnimaArtistsPage() {
                 <header className="mb-7 flex flex-wrap items-start justify-between gap-4">
                     <div className="min-w-0 flex-1">
                         <h1 className="text-3xl font-bold tracking-tight text-[var(--foreground)]">
-                            {t("animaArtistsTitle")}
+                            {t("animaArtists.title")}
                         </h1>
                         <p className="mt-2 text-sm leading-6 text-[var(--muted)]">
-                            {t("animaArtistsSubtitle")}
+                            {t("animaArtists.subtitle")}
                         </p>
                     </div>
                     <button
@@ -106,7 +106,7 @@ export default function AnimaArtistsPage() {
 
                 {loadError ? (
                     <div className="rounded-2xl border border-dashed border-[var(--line-divider)] px-6 py-10 text-center text-sm text-[var(--muted)]">
-                        {t("animaArtistsLoadFailed")}
+                        {t("animaArtists.loadFailed")}
                     </div>
                 ) : null}
 
@@ -114,7 +114,7 @@ export default function AnimaArtistsPage() {
                     <div
                         className="grid gap-5 sm:grid-cols-2 xl:grid-cols-3"
                         aria-busy="true"
-                        aria-label={t("searchIndexing")}
+                        aria-label={t("search.indexing")}
                     >
                         {Array.from({length: 6}).map((_, i) => (
                             <div
@@ -194,7 +194,7 @@ export default function AnimaArtistsPage() {
                                                     className="h-4 w-4"
                                                 />
                                                 <span>
-                                                    {t("animaArtistsUniqueness")}
+                                                    {t("animaArtists.uniqueness")}
                                                     <span className="ml-1 font-semibold text-[var(--primary-text)]">
                                                         {artist.uniqueness_score.toFixed(2)}
                                                     </span>
@@ -206,13 +206,13 @@ export default function AnimaArtistsPage() {
                                             onClick={() => handleCopy(artist.id, artist.name)}
                                             title={
                                                 copied
-                                                    ? t("animaArtistsCopied")
-                                                    : t("animaArtistsCopyName")
+                                                    ? t("animaArtists.copied")
+                                                    : t("animaArtists.copyName")
                                             }
                                             aria-label={
                                                 copied
-                                                    ? t("animaArtistsCopied")
-                                                    : t("animaArtistsCopyName")
+                                                    ? t("animaArtists.copied")
+                                                    : t("animaArtists.copyName")
                                             }
                                             className={classNames(
                                                 "btn-regular shrink-0 rounded-full px-3 py-2 text-xs font-medium transition-all",
@@ -231,8 +231,8 @@ export default function AnimaArtistsPage() {
                                                 />
                                                 <span>
                                                     {copied
-                                                        ? t("animaArtistsCopied")
-                                                        : t("animaArtistsCopy")}
+                                                        ? t("animaArtists.copied")
+                                                        : t("animaArtists.copy")}
                                                 </span>
                                             </span>
                                         </button>
@@ -246,7 +246,7 @@ export default function AnimaArtistsPage() {
 
             <ImageLightbox
                 src={lightboxSrc}
-                alt={t("animaArtistsPreview")}
+                alt={t("animaArtists.preview")}
                 onClose={() => setLightboxSrc(null)}
             />
             <AnimaInfoModal open={infoOpen} onClose={() => setInfoOpen(false)} />

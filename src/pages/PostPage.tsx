@@ -104,7 +104,7 @@ export default function PostPage() {
 
     useDocumentTitle(
         notFound
-            ? t("postNotFound")
+            ? t("error.postNotFound")
             : postMeta
               ? postMeta.title
               : undefined,
@@ -155,20 +155,20 @@ export default function PostPage() {
             <MainGridLayout categories={categories} tags={tags}>
                 <section className="card px-6 py-8 text-center">
                     <h2 className="text-xl font-bold text-[var(--foreground)]">
-                        {t("postNotFound")}
+                        {t("error.postNotFound")}
                     </h2>
                     <div className="mt-5 flex justify-center gap-3">
                         <Link
                             to="/"
                             className="rounded-full bg-[var(--primary-text)] px-5 py-2 text-sm font-medium text-white dark:bg-[var(--primary)]"
                         >
-                            {t("backHome")}
+                            {t("common.backHome")}
                         </Link>
                         <Link
                             to="/archive"
                             className="rounded-full border border-black/10 px-5 py-2 text-sm font-medium text-[var(--foreground)] dark:border-white/15"
                         >
-                            {t("viewArchive")}
+                            {t("common.viewArchive")}
                         </Link>
                     </div>
                 </section>
@@ -231,7 +231,7 @@ export default function PostPage() {
                                     className="card block px-5 py-4 transition hover:border-[var(--primary)]"
                                 >
                                     <div className="text-xs text-[var(--muted)]">
-                                        {t("prevPost")}
+                                        {t("pagination.prevPost")}
                                     </div>
                                     <div className="mt-1 font-medium text-[var(--foreground)]">
                                         {nextPost.title}
@@ -246,7 +246,7 @@ export default function PostPage() {
                                     className="card block px-5 py-4 text-right transition hover:border-[var(--primary)]"
                                 >
                                     <div className="text-xs text-[var(--muted)]">
-                                        {t("nextPost")}
+                                        {t("pagination.nextPost")}
                                     </div>
                                     <div className="mt-1 font-medium text-[var(--foreground)]">
                                         {prevPost.title}

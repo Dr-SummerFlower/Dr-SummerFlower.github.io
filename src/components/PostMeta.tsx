@@ -49,7 +49,7 @@ export default function PostMeta({
                     <span className="inline-flex items-center gap-1.5">
                         <Icon icon="material-symbols:update-rounded" className={iconClass}/>
                         <span>
-                            {t("updatedAt")} {formatDateToYYYYMMDD(updated!)}
+                            {t("common.updatedAt")} {formatDateToYYYYMMDD(updated!)}
                         </span>
                     </span>
                 ) : null}
@@ -69,7 +69,7 @@ export default function PostMeta({
                     <span className="inline-flex items-center gap-1.5">
                         <Icon icon="material-symbols:text-fields-rounded" className={iconClass}/>
                         <span>
-                            {words} {t("words")}
+                            {words} {t("common.words")}
                         </span>
                     </span>
                 ) : null}
@@ -77,7 +77,7 @@ export default function PostMeta({
                     <span className="inline-flex items-center gap-1.5">
                         <Icon icon="material-symbols:schedule-rounded" className={iconClass}/>
                         <span>
-                            {readingMinutes} {t("minutes")}
+                            {readingMinutes} {t("common.minutes")}
                         </span>
                     </span>
                 ) : null}

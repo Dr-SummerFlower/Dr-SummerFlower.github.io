@@ -53,7 +53,7 @@ export default function ImageLightbox({src, alt, onClose}: Props) {
             onClick={onClose}
             role="dialog"
             aria-modal="true"
-            aria-label={alt || t("animaArtistsPreview")}
+            aria-label={alt || t("animaArtists.preview")}
             style={{
                 backgroundColor: "rgba(0,0,0,0.78)",
                 backdropFilter: "blur(4px)",
@@ -70,7 +70,7 @@ export default function ImageLightbox({src, alt, onClose}: Props) {
             <button
                 type="button"
                 onClick={handleCloseClick}
-                aria-label={t("closeMenu")}
+                aria-label={t("ui.closeMenu")}
                 className="btn-regular fixed z-10 h-11 w-11 shrink-0 rounded-full p-0 shadow-lg active:scale-95"
                 style={{
                     top: "20px",
@@ -87,7 +87,7 @@ export default function ImageLightbox({src, alt, onClose}: Props) {
             </button>
             <img
                 src={src}
-                alt={alt || t("animaArtistsPreview")}
+                alt={alt || t("animaArtists.preview")}
                 onClick={handleImgClick}
                 className="relative z-[1] select-none shadow-2xl"
                 draggable={false}

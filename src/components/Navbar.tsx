@@ -12,13 +12,13 @@ import {useUIStore} from "@/store/ui";
 export default function Navbar() {
     const allLinks = getNavLinks().map((link) => {
         if (link.href === "/") {
-            return {...link, name: t("navHome")};
+            return {...link, name: t("nav.home")};
         }
         if (link.href === "/archive") {
-            return {...link, name: t("navArchive")};
+            return {...link, name: t("nav.archive")};
         }
         if (link.href === "/about") {
-            return {...link, name: t("navAbout")};
+            return {...link, name: t("nav.about")};
         }
         return link;
     });
@@ -28,7 +28,7 @@ export default function Navbar() {
     );
     const navLinks = [
         ...otherLinks,
-        {name: t("navAnimaArtists"), href: "/anima-artists"},
+        {name: t("nav.animaArtists"), href: "/anima-artists"},
         ...(aboutLink ? [aboutLink] : []),
     ];
     const [mobileMenuOpen, setMobileMenuOpen] = useState(false);
@@ -177,7 +177,7 @@ export default function Navbar() {
                             )}
                             aria-expanded={mobileSearchOpen}
                             aria-controls="mobile-navbar-search"
-                            aria-label={t("searchLabel")}
+                            aria-label={t("search.label")}
                         >
                             <Icon
                                 icon={
@@ -203,7 +203,7 @@ export default function Navbar() {
                             }}
                             className="btn-plain flex h-10 w-10 rounded-full border border-black/10 dark:border-white/10"
                             aria-label={
-                                mobileMenuOpen ? t("closeMenu") : t("openMenu")
+                                mobileMenuOpen ? t("ui.closeMenu") : t("ui.openMenu")
                             }
                             aria-expanded={mobileMenuOpen}
                             aria-controls="mobile-navbar-menu"

@@ -14,17 +14,17 @@ export default function LightDarkSwitch() {
         () => [
             {
                 value: "light" as const satisfies ThemeMode,
-                label: t("themeModeLight"),
+                label: t("theme.modeLight"),
                 icon: "material-symbols:wb-sunny-outline-rounded",
             },
             {
                 value: "dark" as const satisfies ThemeMode,
-                label: t("themeModeDark"),
+                label: t("theme.modeDark"),
                 icon: "material-symbols:dark-mode-outline-rounded",
             },
             {
                 value: "auto" as const satisfies ThemeMode,
-                label: t("themeModeAuto"),
+                label: t("theme.modeAuto"),
                 icon: "material-symbols:radio-button-partial-outline-rounded",
             },
         ],
@@ -57,7 +57,7 @@ export default function LightDarkSwitch() {
     return (
         <div ref={wrapperRef} className="relative">
             <button
-                aria-label={t("themeModeLabel")}
+                aria-label={t("theme.modeLabel")}
                 aria-haspopup="menu"
                 aria-expanded={open}
                 type="button"

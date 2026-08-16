@@ -133,7 +133,7 @@ export default function NavbarSearch({
                         : item.text);
                 return {
                     href: buildPostHref(item.slug),
-                    title: item.title || t("searchUntitled"),
+                    title: item.title || t("search.untitled"),
                     excerpt,
                 };
             });
@@ -257,9 +257,9 @@ export default function NavbarSearch({
                     onFocus={handleFocus}
                     onBlur={handleBlur}
                     onKeyDown={handleKeyDown}
-                    placeholder={t("searchPlaceholder")}
+                    placeholder={t("search.placeholder")}
                     autoComplete="off"
-                    aria-label={t("searchLabel")}
+                    aria-label={t("search.label")}
                     aria-autocomplete="list"
                     aria-haspopup="listbox"
                     aria-expanded={showPanel}
@@ -270,7 +270,7 @@ export default function NavbarSearch({
 
             {showHint ? (
                 <p className="mt-2 px-1 text-xs leading-relaxed text-[var(--muted)]">
-                    {t("searchUnavailable")}
+                    {t("search.unavailable")}
                 </p>
             ) : null}
 
@@ -293,14 +293,14 @@ export default function NavbarSearch({
                                 className="inline-block h-4 w-4 animate-pulse rounded-full bg-[color-mix(in_srgb,var(--primary)_35%,var(--card-bg))]"
                                 aria-hidden
                             />
-                            <span className="leading-snug">{t("searchIndexing")}</span>
+                            <span className="leading-snug">{t("search.indexing")}</span>
                         </li>
                     ) : showEmpty ? (
                         <li
                             className="rounded-xl px-3 py-4 text-center text-sm leading-relaxed text-[var(--muted)]"
                             role="presentation"
                         >
-                            {t("searchNoResults")}
+                            {t("search.noResults")}
                         </li>
                     ) : (
                         candidates.map((item, index) => (
