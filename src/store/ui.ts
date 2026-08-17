@@ -1,4 +1,5 @@
 import {create} from "zustand";
+import type {HeadingItem} from "@/types/post";
 
 type UIState = {
     mobileMenuOpen: boolean;
@@ -7,6 +8,8 @@ type UIState = {
     backToTopVisible: boolean;
     scrollY: number;
     scrollDirection: "up" | "down";
+    heroMode: "home" | "compact";
+    headings: HeadingItem[];
     openMobileMenu: () => void;
     closeMobileMenu: () => void;
     toggleMobileMenu: () => void;
@@ -14,6 +17,8 @@ type UIState = {
     closeSearchOverlay: () => void;
     toggleSearchOverlay: () => void;
     syncScroll: (y: number) => void;
+    setLayoutHeroMode: (mode: "home" | "compact") => void;
+    setLayoutHeadings: (headings: HeadingItem[]) => void;
 };
 
 let lastScrollY = 0;
@@ -25,6 +30,8 @@ export const useUIStore = create<UIState>()((set, get) => ({
     backToTopVisible: false,
     scrollY: 0,
     scrollDirection: "down",
+    heroMode: "compact",
+    headings: [],
     openMobileMenu: () => set({mobileMenuOpen: true}),
     closeMobileMenu: () => set({mobileMenuOpen: false}),
     toggleMobileMenu: () => set({mobileMenuOpen: !get().mobileMenuOpen}),
@@ -41,4 +48,6 @@ export const useUIStore = create<UIState>()((set, get) => ({
             homeHeroCompact: y > 12,
         });
     },
+    setLayoutHeroMode: (mode) => set({heroMode: mode}),
+    setLayoutHeadings: (headings) => set({headings}),
 }));

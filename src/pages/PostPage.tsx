@@ -1,7 +1,7 @@
 import {useEffect, useMemo, useState} from "react";
 import {Link, useParams} from "react-router-dom";
 import {useContentStore} from "@/store/content";
-import MainGridLayout from "@/layouts/MainGridLayout";
+import {useUIStore} from "@/store/ui";
 import PostMeta from "@/components/PostMeta";
 import Markdown from "@/components/misc/Markdown";
 import Giscus from "@/components/Giscus";
@@ -41,8 +41,7 @@ export default function PostPage() {
     const getPostHtml = useContentStore((s) => s.getPostHtml);
     const tryApplyInline = useContentStore((s) => s.tryApplyInline);
     const posts = useContentStore((s) => s.posts);
-    const categories = useContentStore((s) => s.categories);
-    const tags = useContentStore((s) => s.tags);
+    const setLayoutHeadings = useUIStore((s) => s.setLayoutHeadings);
 
     const inline = useMemo(() => (slug ? readInlinePostData(slug) : null), [slug]);
 
@@ -113,7 +112,13 @@ export default function PostPage() {
         postMeta?.image || undefined,
     );
 
-    const headings: HeadingItem[] = htmlPayload?.headings ?? [];
+    const headings: HeadingItem[] = useMemo(() => htmlPayload?.headings ?? [], [htmlPayload?.headings]);
+
+    useEffect(() => {
+        setLayoutHeadings(headings);
+        return () => setLayoutHeadings([]);
+    }, [headings, setLayoutHeadings]);
+
     const meta = notFound ? null : postMeta;
     const prevPost = meta?.prevPost;
     const nextPost = meta?.nextPost;
@@ -123,61 +128,57 @@ export default function PostPage() {
 
     if (!ready) {
         return (
-            <MainGridLayout categories={categories} tags={tags}>
-                <article className="card overflow-hidden px-6 py-6 md:px-9 md:py-8">
-                    <div
-                        aria-busy
-                        aria-live="polite"
-                        className="block h-10 w-3/4 rounded-2xl bg-[var(--foreground)]/8"
+            <article className="card overflow-hidden px-6 py-6 md:px-9 md:py-8">
+                <div
+                    aria-busy
+                    aria-live="polite"
+                    className="block h-10 w-3/4 rounded-2xl bg-[var(--foreground)]/8"
+                    style={{animation: "pulsate 1.6s ease-in-out infinite"}}
+                />
+                <div className="mt-5 flex flex-wrap gap-3">
+                    <span
+                        className="inline-block h-4 w-24 rounded-full bg-[var(--foreground)]/8"
                         style={{animation: "pulsate 1.6s ease-in-out infinite"}}
                     />
-                    <div className="mt-5 flex flex-wrap gap-3">
-                        <span
-                            className="inline-block h-4 w-24 rounded-full bg-[var(--foreground)]/8"
-                            style={{animation: "pulsate 1.6s ease-in-out infinite"}}
-                        />
-                        <span
-                            className="inline-block h-4 w-16 rounded-full bg-[var(--foreground)]/8"
-                            style={{animation: "pulsate 1.6s ease-in-out infinite", animationDelay: ".2s"}}
-                        />
-                        <span
-                            className="inline-block h-4 w-20 rounded-full bg-[var(--foreground)]/8"
-                            style={{animation: "pulsate 1.6s ease-in-out infinite", animationDelay: ".4s"}}
-                        />
-                    </div>
-                </article>
-            </MainGridLayout>
+                    <span
+                        className="inline-block h-4 w-16 rounded-full bg-[var(--foreground)]/8"
+                        style={{animation: "pulsate 1.6s ease-in-out infinite", animationDelay: ".2s"}}
+                    />
+                    <span
+                        className="inline-block h-4 w-20 rounded-full bg-[var(--foreground)]/8"
+                        style={{animation: "pulsate 1.6s ease-in-out infinite", animationDelay: ".4s"}}
+                    />
+                </div>
+            </article>
         );
     }
 
     if (notFound) {
         return (
-            <MainGridLayout categories={categories} tags={tags}>
-                <section className="card px-6 py-8 text-center">
-                    <h2 className="text-xl font-bold text-[var(--foreground)]">
-                        {t("error.postNotFound")}
-                    </h2>
-                    <div className="mt-5 flex justify-center gap-3">
-                        <Link
-                            to="/"
-                            className="rounded-full bg-[var(--primary-text)] px-5 py-2 text-sm font-medium text-white dark:bg-[var(--primary)]"
-                        >
-                            {t("common.backHome")}
-                        </Link>
-                        <Link
-                            to="/archive"
-                            className="rounded-full border border-black/10 px-5 py-2 text-sm font-medium text-[var(--foreground)] dark:border-white/15"
-                        >
-                            {t("common.viewArchive")}
-                        </Link>
-                    </div>
-                </section>
-            </MainGridLayout>
+            <section className="card px-6 py-8 text-center">
+                <h2 className="text-xl font-bold text-[var(--foreground)]">
+                    {t("error.postNotFound")}
+                </h2>
+                <div className="mt-5 flex justify-center gap-3">
+                    <Link
+                        to="/"
+                        className="rounded-full bg-[var(--primary-text)] px-5 py-2 text-sm font-medium text-white dark:bg-[var(--primary)]"
+                    >
+                        {t("common.backHome")}
+                    </Link>
+                    <Link
+                        to="/archive"
+                        className="rounded-full border border-black/10 px-5 py-2 text-sm font-medium text-[var(--foreground)] dark:border-white/15"
+                    >
+                        {t("common.viewArchive")}
+                    </Link>
+                </div>
+            </section>
         );
     }
 
     return (
-        <MainGridLayout categories={categories} tags={tags} headings={headings}>
+        <>
             {meta && htmlPayload ? (
                 <>
                     <article className="card overflow-hidden px-6 py-6 md:px-9 md:py-8">
@@ -263,6 +264,6 @@ export default function PostPage() {
                 alt={meta?.title || undefined}
                 onClose={() => setCoverLightboxSrc(null)}
             />
-        </MainGridLayout>
+        </>
     );
 }

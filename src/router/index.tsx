@@ -7,7 +7,43 @@ import ArchivePage from "@/pages/ArchivePage";
 import AboutPage from "@/pages/AboutPage";
 import CustomPage from "@/pages/CustomPage";
 import NotFoundPage from "@/pages/NotFoundPage";
-import AnimaArtistsPage from "@/pages/AnimaArtistsPage";
+import {getCustomPages} from "@/lib/config/helpers/navigation.ts";
+import {ComponentCustomPageLoader} from "@/custom-pages";
+import type {ComponentCustomPage, CustomPageItem} from "@/types/config";
+
+function resolveRoutePath(page: CustomPageItem): string | null {
+    if (page.type === "component") {
+        let path = page.path ?? `pages/${page.slug}`;
+        if (path.startsWith("/")) {
+            path = path.slice(1);
+        }
+        return path;
+    }
+    if (page.slug === "about") {
+        return "about";
+    }
+    return null;
+}
+
+function buildCustomPageRoutes(): RouteObject[] {
+    const result: RouteObject[] = [];
+    for (const page of getCustomPages()) {
+        const path = resolveRoutePath(page);
+        if (!path) continue;
+        if (page.type === "component") {
+            result.push({
+                path,
+                element: <ComponentCustomPageLoader pageMeta={page as ComponentCustomPage}/>,
+            });
+        } else if (page.slug === "about") {
+            result.push({
+                path,
+                element: <AboutPage/>,
+            });
+        }
+    }
+    return result;
+}
 
 const routes: RouteObject[] = [
     {
@@ -17,8 +53,7 @@ const routes: RouteObject[] = [
         children: [
             {index: true, element: <HomePage/>},
             {path: "archive", element: <ArchivePage/>},
-            {path: "about", element: <AboutPage/>},
-            {path: "anima-artists", element: <AnimaArtistsPage/>},
+            ...buildCustomPageRoutes(),
             {path: "pages/:slug", element: <CustomPage/>},
             {path: "posts/:slug", element: <PostPage/>},
             {path: "*", element: <NotFoundPage/>},

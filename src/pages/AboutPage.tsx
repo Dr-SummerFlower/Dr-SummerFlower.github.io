@@ -1,6 +1,6 @@
 import {useEffect, useMemo, useState} from "react";
 import {useContentStore} from "@/store/content";
-import MainGridLayout from "@/layouts/MainGridLayout";
+import {useUIStore} from "@/store/ui";
 import Markdown from "@/components/misc/Markdown";
 import {useDocumentTitle} from "@/utils/seo";
 import {t} from "@/i18n";
@@ -38,8 +38,7 @@ export default function AboutPage() {
     const ensureMeta = useContentStore((s) => s.ensureMeta);
     const getCustomPageHtml = useContentStore((s) => s.getCustomPageHtml);
     const tryApplyInline = useContentStore((s) => s.tryApplyInline);
-    const categories = useContentStore((s) => s.categories);
-    const tags = useContentStore((s) => s.tags);
+    const setLayoutHeadings = useUIStore((s) => s.setLayoutHeadings);
 
     const inline = useMemo(() => readInlineCustomPage("about"), []);
     const [page, setPage] = useState<CustomPageContent | null>(inline?.payload ?? null);
@@ -76,23 +75,24 @@ export default function AboutPage() {
         "/about",
     );
 
-    const headings: HeadingItem[] = page?.headings ?? [];
+    const headings: HeadingItem[] = useMemo(() => page?.headings ?? [], [page?.headings]);
+
+    useEffect(() => {
+        setLayoutHeadings(headings);
+        return () => setLayoutHeadings([]);
+    }, [headings, setLayoutHeadings]);
 
     if (notFound) {
         return (
-            <MainGridLayout categories={categories} tags={tags}>
-                <section className="card px-6 py-8 text-center text-sm text-[var(--muted)]">
-                    {t("error.customPageNotFound")}
-                </section>
-            </MainGridLayout>
+            <section className="card px-6 py-8 text-center text-sm text-[var(--muted)]">
+                {t("error.customPageNotFound")}
+            </section>
         );
     }
 
     return (
-        <MainGridLayout categories={categories} tags={tags} headings={headings}>
-            <section className="card px-6 py-6 md:px-9">
-                {page ? <Markdown html={page.html}/> : null}
-            </section>
-        </MainGridLayout>
+        <section className="card px-6 py-6 md:px-9">
+            {page ? <Markdown html={page.html}/> : null}
+        </section>
     );
 }

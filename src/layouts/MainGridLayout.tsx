@@ -8,24 +8,21 @@ import HomeHeroState from "@/components/HomeHeroState";
 import SideBar from "@/components/widget/SideBar";
 import TOC from "@/components/widget/TOC";
 import TOCMobileFab from "@/components/widget/TOCMobileFab";
-import type {CountItem, HeadingItem} from "@/types/post";
 import {classNames} from "@/utils/common-utils";
+import {useUIStore} from "@/store/ui";
+import {useContentStore} from "@/store/content";
 
 type Props = {
     children: ReactNode;
-    categories: CountItem[];
-    tags: CountItem[];
-    headings?: HeadingItem[];
-    heroMode?: "home" | "compact";
 };
 
-export default function MainGridLayout({
-    children,
-    categories,
-    tags,
-    headings = [],
-    heroMode = "compact",
-}: Props) {
+export default function MainGridLayout({children}: Props) {
+    const categories = useContentStore((s) => s.categories);
+    const tags = useContentStore((s) => s.tags);
+    const heroModeFromStore = useUIStore((s) => s.heroMode);
+    const headingsFromStore = useUIStore((s) => s.headings);
+    const heroMode = heroModeFromStore;
+    const headings = headingsFromStore;
     const enableHomeHero = siteConfig.banner.enable && heroMode === "home";
     const showTocColumn = siteConfig.toc.enable && headings.length > 0;
 

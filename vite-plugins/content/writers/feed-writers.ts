@@ -2,7 +2,7 @@ import type {NavLink} from "../../../src/types/config.ts";
 import {blogConfig} from "../../../src/config.ts";
 import {seoConfig, siteConfig} from "../../../src/lib/config/derived.config.ts";
 import {getAbsoluteUrl} from "../../../src/lib/config/helpers/url.ts";
-import {getNavLinks} from "../../../src/lib/config/helpers/navigation.ts";
+import {getCustomPages, getNavLinks} from "../../../src/lib/config/helpers/navigation.ts";
 import type {BlogPostMeta} from "../../../src/types/post.ts";
 import type {CompiledCustomPage} from "../types.ts";
 import {xmlEscape} from "./../utils/color-utils.ts";
@@ -56,6 +56,12 @@ export function buildSitemapXml(posts: BlogPostMeta[], customPages: CompiledCust
                 lastmod: new Date().toISOString().slice(0, 10),
             };
         });
+    for (const cfgPage of getCustomPages()) {
+        if (cfgPage.type === "component" && cfgPage.showInSitemap !== false) {
+            const href = cfgPage.path ?? `/pages/${cfgPage.slug}`;
+            pageUrls.push({loc: getAbsoluteUrl(href), lastmod: new Date().toISOString().slice(0, 10)});
+        }
+    }
     const all = [...staticUrls, ...postUrls, ...pageUrls];
     const body = all
         .map(
@@ -120,11 +126,19 @@ export function buildLlmsText(
                 const href = item.slug === "about" ? "/about" : `/pages/${item.slug}`;
                 return `- [${item.title}](${getAbsoluteUrl(href)})`;
             }),
+    ];
+    for (const cfgPage of getCustomPages()) {
+        if (cfgPage.type === "component" && cfgPage.showInSitemap !== false) {
+            const href = cfgPage.path ?? `/pages/${cfgPage.slug}`;
+            baseLines.push(`- [${cfgPage.title}](${getAbsoluteUrl(href)})`);
+        }
+    }
+    baseLines.push(
         `- [RSS](${getAbsoluteUrl("/rss.xml")})`,
         `- [全文索引 (llms-full.txt)](${getAbsoluteUrl("/llms-full.txt")})`,
         "",
         "## 文章",
-    ];
+    );
     const postLines = posts.map((post) => {
         const link = getAbsoluteUrl(`/posts/${post.slug}`);
         const dateText = new Date(post.published).toISOString().slice(0, 10);

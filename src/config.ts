@@ -94,6 +94,7 @@ export const blogConfig = {
                 showInNavbar: true,
                 showInSitemap: true,
             },
+            { type: "component", slug: "anima-artists", path: "/anima-artists", componentId: "anima-artists", title: "画师精选", description: "ComfyUI 画师画风预览，支持一键复制画师名称。", showInNavbar: true, showInSitemap: true },
         ] satisfies CustomPageItem[],
     },
     profile: {

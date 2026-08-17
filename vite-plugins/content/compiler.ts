@@ -129,6 +129,7 @@ export async function scanAndCompile(projectRoot: string): Promise<CompiledArtif
 
     const customPageSources: CompiledCustomPage[] = [];
     for (const page of getCustomPages()) {
+        if (page.type === "component") continue;
         const sourcePath = path.join(contentRoot, page.filePath || `${page.slug}.md`);
         if (!(await pathExists(sourcePath))) continue;
         const fileContent = await fsPromises.readFile(sourcePath, "utf8");

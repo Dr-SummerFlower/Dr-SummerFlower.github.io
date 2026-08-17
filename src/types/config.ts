@@ -10,14 +10,26 @@ export type SocialLink = {
   icon?: string;
 };
 
-export type CustomPageItem = {
+export type CustomPageBase = {
   slug: string;
   title: string;
-  filePath?: string;
   description?: string;
   showInNavbar?: boolean;
   showInSitemap?: boolean;
 };
+
+export type MarkdownCustomPage = CustomPageBase & {
+  type?: "markdown";
+  filePath?: string;
+};
+
+export type ComponentCustomPage = CustomPageBase & {
+  type: "component";
+  path?: string;
+  componentId?: string;
+};
+
+export type CustomPageItem = MarkdownCustomPage | ComponentCustomPage;
 
 export type GiscusConfig = {
   enable: boolean;

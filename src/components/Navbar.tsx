@@ -29,7 +29,6 @@ export default function Navbar() {
     );
     const navLinks = [
         ...otherLinks,
-        {name: t("nav.animaArtists"), href: "/anima-artists"},
         ...(aboutLink ? [aboutLink] : []),
     ];
     const [mobileMenuOpen, setMobileMenuOpen] = useState(false);

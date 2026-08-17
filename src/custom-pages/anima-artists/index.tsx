@@ -1,12 +1,12 @@
 import {useCallback, useEffect, useMemo, useState} from "react";
-import {useContentStore} from "@/store/content";
-import MainGridLayout from "@/layouts/MainGridLayout";
+import {useUIStore} from "@/store/ui";
 import {useDocumentTitle} from "@/utils/seo";
+import {useLocalAnimaT} from "./i18n.ts";
 import {t} from "@/i18n";
 import {withSiteBasePath} from "@/lib/config/helpers/url.ts";
 import {Icon} from "@iconify/react";
 import ImageLightbox from "@/components/ImageLightbox";
-import AnimaInfoModal from "@/components/AnimaInfoModal";
+import AnimaInfoModal from "./components/AnimaInfoModal";
 import {classNames} from "@/utils/common-utils";
 
 type ArtistEntry = {
@@ -20,8 +20,8 @@ type ArtistIndex = Record<string, ArtistEntry>;
 const ARTIST_INDEX_PATH = "/anima-artists/index.json";
 
 export default function AnimaArtistsPage() {
-    const categories = useContentStore((s) => s.categories);
-    const tags = useContentStore((s) => s.tags);
+    const localT = useLocalAnimaT();
+    const setLayoutHeadings = useUIStore((s) => s.setLayoutHeadings);
 
     const [index, setIndex] = useState<ArtistIndex | null>(null);
     const [loadError, setLoadError] = useState(false);
@@ -29,7 +29,12 @@ export default function AnimaArtistsPage() {
     const [lightboxSrc, setLightboxSrc] = useState<string | null>(null);
     const [infoOpen, setInfoOpen] = useState(false);
 
-    useDocumentTitle(t("animaArtists.title"), t("animaArtists.description"), "/anima-artists");
+    useDocumentTitle(localT("title"), localT("description"), "/anima-artists");
+
+    useEffect(() => {
+        setLayoutHeadings([]);
+        return () => setLayoutHeadings([]);
+    }, [setLayoutHeadings]);
 
     useEffect(() => {
         let cancelled = false;
@@ -80,15 +85,15 @@ export default function AnimaArtistsPage() {
     }, []);
 
     return (
-        <MainGridLayout categories={categories} tags={tags}>
+        <>
             <section className="card px-5 py-6 md:px-9 md:py-8">
                 <header className="mb-7 flex flex-wrap items-start justify-between gap-4">
                     <div className="min-w-0 flex-1">
                         <h1 className="text-3xl font-bold tracking-tight text-[var(--foreground)]">
-                            {t("animaArtists.title")}
+                            {localT("title")}
                         </h1>
                         <p className="mt-2 text-sm leading-6 text-[var(--muted)]">
-                            {t("animaArtists.subtitle")}
+                            {localT("subtitle")}
                         </p>
                     </div>
                     <button
@@ -106,7 +111,7 @@ export default function AnimaArtistsPage() {
 
                 {loadError ? (
                     <div className="rounded-2xl border border-dashed border-[var(--line-divider)] px-6 py-10 text-center text-sm text-[var(--muted)]">
-                        {t("animaArtists.loadFailed")}
+                        {localT("loadFailed")}
                     </div>
                 ) : null}
 
@@ -194,7 +199,7 @@ export default function AnimaArtistsPage() {
                                                     className="h-4 w-4"
                                                 />
                                                 <span>
-                                                    {t("animaArtists.uniqueness")}
+                                                    {localT("uniqueness")}
                                                     <span className="ml-1 font-semibold text-[var(--primary-text)]">
                                                         {artist.uniqueness_score.toFixed(2)}
                                                     </span>
@@ -206,13 +211,13 @@ export default function AnimaArtistsPage() {
                                             onClick={() => handleCopy(artist.id, artist.name)}
                                             title={
                                                 copied
-                                                    ? t("animaArtists.copied")
-                                                    : t("animaArtists.copyName")
+                                                    ? localT("copied")
+                                                    : localT("copyName")
                                             }
                                             aria-label={
                                                 copied
-                                                    ? t("animaArtists.copied")
-                                                    : t("animaArtists.copyName")
+                                                    ? localT("copied")
+                                                    : localT("copyName")
                                             }
                                             className={classNames(
                                                 "btn-regular shrink-0 rounded-full px-3 py-2 text-xs font-medium transition-all",
@@ -231,8 +236,8 @@ export default function AnimaArtistsPage() {
                                                 />
                                                 <span>
                                                     {copied
-                                                        ? t("animaArtists.copied")
-                                                        : t("animaArtists.copy")}
+                                                        ? localT("copied")
+                                                        : localT("copy")}
                                                 </span>
                                             </span>
                                         </button>
@@ -246,10 +251,10 @@ export default function AnimaArtistsPage() {
 
             <ImageLightbox
                 src={lightboxSrc}
-                alt={t("animaArtists.preview")}
+                alt={localT("preview")}
                 onClose={() => setLightboxSrc(null)}
             />
             <AnimaInfoModal open={infoOpen} onClose={() => setInfoOpen(false)} />
-        </MainGridLayout>
+        </>
     );
 }
